@@ -9,6 +9,8 @@ import java.awt.CardLayout;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -17,16 +19,13 @@ import javax.swing.JButton;
 public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
     CardLayout cardLayoutManager = new CardLayout();
-    private final Executor EXECUTOR;
     
     /**
      * Creates new form EExam_GUI
      */
-    public E_Exam_Client_GUI(Executor executor) {
+    public E_Exam_Client_GUI() {
         initComponents();
-        
-        this.EXECUTOR = executor;
-         
+                 
         cardlayout_container.setLayout(cardLayoutManager);
         
         cardlayout_container.add(login_panel, "login");
@@ -388,14 +387,15 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
        return this.login_btn;
     }
     
-    public String getUsernameTextField()
+    public JTextField getUsernameTextField()
     {
-        return this.username_txtField.getText();
+        return this.username_txtField;
     }
     
-    public String getPasswordTextField()
+    public JPasswordField getPasswordTextField()
     {
-        return String.valueOf(this.password_txtField.getPassword());
+        return this.password_txtField;
+        //return String.valueOf(this.password_txtField.getPassword());
     }
     
     
