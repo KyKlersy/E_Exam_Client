@@ -24,7 +24,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>com.oopgroup3.e_exam_server.E_Exam_Server_Endpoint</mainClass>
+                <mainClass>com.oopgroup3.e_exam_client.E_Exam_ClientApp</mainClass>
               </manifest>
             </archive>
             <descriptorRefs>

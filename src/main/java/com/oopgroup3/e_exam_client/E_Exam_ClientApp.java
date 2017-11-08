@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 public class E_Exam_ClientApp 
 {
     
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(4);
+    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(8);
     private static E_Exam_Client_GUI GUI;
     
     public static void main(String[] args) {
@@ -69,7 +69,8 @@ public class E_Exam_ClientApp
             }   
         });
         
-        
+        /* Start background thread for handling incomming messages from server to client */
+        EXECUTOR.execute(new ClientServerResponseThread());
         
     }        
 }
