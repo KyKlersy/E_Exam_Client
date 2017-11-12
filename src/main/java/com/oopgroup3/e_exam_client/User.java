@@ -15,6 +15,14 @@ public class User {
     int userID;
     String userFirstName;
 
+    public User(String sessionID, int userType, int userID, String userFirstName) {
+        this.sessionID = sessionID;
+        this.userType = userType;
+        this.userID = userID;
+        this.userFirstName = userFirstName;
+    }
+    
+   
     public String getSessionID() {
         return sessionID;
     }
@@ -45,5 +53,17 @@ public class User {
 
     public void setUserFirstName(String userFirstName) {
         this.userFirstName = userFirstName;
+    }
+    
+    public boolean isAuthenticated()
+    {
+        if(sessionID.equals(""))
+        {
+            return false;             
+        }
+        else
+        {
+            return true;
+        }
     }
 }

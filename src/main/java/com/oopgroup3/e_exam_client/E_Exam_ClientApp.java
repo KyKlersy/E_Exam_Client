@@ -12,7 +12,10 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
 
 /**
  *
@@ -20,12 +23,23 @@ import javax.swing.SwingUtilities;
  */
 public class E_Exam_ClientApp 
 {
-    
+    /* Thread pooling usage of EXECUTOR to run Runables / callables or java swingworkers */
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(8);
+    
+    /* Hold a reference to the GUI so that we can access its getters / setters */
     private static E_Exam_Client_GUI GUI;
     
+    /* Message passing class for inter thread communication */
+    private static ResponseSharedData responseSharedData = new ResponseSharedData();
+    
+    
     public static void main(String[] args) {
-
+        
+        User user = null;
+        
+        /***********************************************
+        * Setup the GUI frame by placing it on the EDT *
+        ************************************************/
         SwingUtilities.invokeLater(new Runnable() 
         {
             @Override
@@ -45,7 +59,13 @@ public class E_Exam_ClientApp
                });
             }
         });
-
+        
+        /*********************************************************************************/
+        /* Start background thread for handling incomming messages from server to client */
+        /*********************************************************************************/
+        EXECUTOR.execute(new ClientServerResponseThread(EXECUTOR, responseSharedData));
+        
+        
         /* Binding thread event handlers to button events here */
         SwingUtilities.invokeLater(new Runnable() 
         {
@@ -53,24 +73,36 @@ public class E_Exam_ClientApp
             public void run() 
             {
                 //Getting Jbutton reference from gui and adding a button event listner
-                JButton btn = GUI.getLoginButton();
-                btn.addActionListener(new ActionListener() 
+                JButton loginButton = GUI.getLoginButton();
+                loginButton.addActionListener(new ActionListener() 
                 {
                     @Override
                     public void actionPerformed(ActionEvent ae) 
                     {
                         //on button click event triggered, create and execute a new thread to handle the task.
                         //These can be swing workers / runnable / callables
-                        EXECUTOR.execute(new ClientLoginThread(GUI.getUsernameTextField(), GUI.getPasswordTextField()));   
+                        EXECUTOR.execute(new ClientLoginThread(GUI.getUsernameTextField(), GUI.getPassword_txtField(), GUI.getCardLayoutManager(), GUI.getCardContainer() ,responseSharedData , user));   
                         
                     }
                 });
                 
+                /**************************************************************************************************
+                 *                                                                                                *
+                 * Add your handlers for your buttons below inside this block for binding.                        *
+                 *                                                                                                *
+                 *                                                                                                *
+                 **************************************************************************************************/
+
+                
+                
+                
+                
+                
+                
+                /****************************************
+                 * End of button handler binding block  *
+                 ****************************************/ 
             }   
-        });
-        
-        /* Start background thread for handling incomming messages from server to client */
-        EXECUTOR.execute(new ClientServerResponseThread());
-        
+        });              
     }        
 }

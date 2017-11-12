@@ -6,9 +6,9 @@
 package com.oopgroup3.e_exam_client;
 
 import java.awt.CardLayout;
-import java.util.Arrays;
-import java.util.concurrent.Executor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  */
 public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
-    CardLayout cardLayoutManager = new CardLayout();
+    private CardLayout cardLayoutManager = new CardLayout();
     
     /**
      * Creates new form EExam_GUI
@@ -56,7 +56,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         username_lbl = new javax.swing.JLabel();
         password_lbl = new javax.swing.JLabel();
         login_btn = new javax.swing.JButton();
-        cancel_btn = new javax.swing.JButton();
+        cancel_login_btn = new javax.swing.JButton();
         username_txtField = new javax.swing.JTextField();
         password_txtField = new javax.swing.JPasswordField();
         gotoRegisterPanel = new javax.swing.JButton();
@@ -67,11 +67,13 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         registerPassword_lbl = new javax.swing.JLabel();
         registerConfirmPassword_lbl = new javax.swing.JLabel();
         register_btn = new javax.swing.JButton();
-        registerCancel_btn = new javax.swing.JButton();
+        register_cancel_btn = new javax.swing.JButton();
         registerUsername_txtField = new javax.swing.JTextField();
         registerPassword_txtField = new javax.swing.JPasswordField();
         registerPasswordConfirm_txtField = new javax.swing.JPasswordField();
         backToLogin = new javax.swing.JButton();
+        user_type_comboBox = new javax.swing.JComboBox<>();
+        user_type_lbl = new javax.swing.JLabel();
         student_panel = new javax.swing.JPanel();
         studentBackToLogin = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -114,14 +116,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 60, 0, 90);
         login_panel.add(login_btn, gridBagConstraints);
 
-        cancel_btn.setText("Cancel");
+        cancel_login_btn.setText("Cancel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 65, 0, 88);
-        login_panel.add(cancel_btn, gridBagConstraints);
+        login_panel.add(cancel_login_btn, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -195,14 +197,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         register_btn.setText("Register");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         register_panel.add(register_btn, gridBagConstraints);
 
-        registerCancel_btn.setText("Cancel");
+        register_cancel_btn.setText("Cancel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        register_panel.add(registerCancel_btn, gridBagConstraints);
+        gridBagConstraints.gridy = 5;
+        register_panel.add(register_cancel_btn, gridBagConstraints);
 
         registerUsername_txtField.setText("jTextField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -235,6 +237,19 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         register_panel.add(backToLogin, gridBagConstraints);
+
+        user_type_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Teacher" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        register_panel.add(user_type_comboBox, gridBagConstraints);
+
+        user_type_lbl.setText("User Type:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        register_panel.add(user_type_lbl, gridBagConstraints);
 
         cardlayout_container.add(register_panel, "card3");
 
@@ -392,12 +407,58 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         return this.username_txtField;
     }
     
-    public JPasswordField getPasswordTextField()
+    /*public JPasswordField getPasswordTextField()
     {
         return this.password_txtField;
         //return String.valueOf(this.password_txtField.getPassword());
+    }*/
+    
+    public CardLayout getCardLayoutManager()
+    {
+        return this.cardLayoutManager;
     }
     
+    public JPanel getCardContainer()
+    {
+        return this.cardlayout_container;
+    }
+    
+    public JButton getCancel_login_btn() {
+        return cancel_login_btn;
+    }
+
+    
+    public JPasswordField getPassword_txtField() {
+        return password_txtField;
+    }
+
+    public JPasswordField getRegisterPasswordConfirm_txtField() {
+        return registerPasswordConfirm_txtField;
+    }
+
+    public JPasswordField getRegisterPassword_txtField() {
+        return registerPassword_txtField;
+    }
+
+    public JTextField getRegisterUsername_txtField() {
+        return registerUsername_txtField;
+    }
+
+    public JButton getRegister_cancel_btn() {
+        return register_cancel_btn;
+    }
+
+    public JTextField getUsername_txtField() {
+        return username_txtField;
+    }
+    
+     public JButton getRegister_btn() {
+        return register_btn;
+    }   
+     
+     public JComboBox<String> getUser_type_comboBox() {
+        return user_type_comboBox;
+    }    
     
     /**
      * @param args the command line arguments
@@ -438,9 +499,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         }); 
     }*/
 
+
+
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backToLogin;
-    private javax.swing.JButton cancel_btn;
+    private javax.swing.JButton cancel_login_btn;
     private javax.swing.JPanel cardlayout_container;
     private javax.swing.JButton examBackToLogin;
     private javax.swing.JPanel exam_panel;
@@ -457,7 +523,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JPanel login_panel;
     private javax.swing.JLabel password_lbl;
     private javax.swing.JPasswordField password_txtField;
-    private javax.swing.JButton registerCancel_btn;
     private javax.swing.JLabel registerConfirmPassword_lbl;
     private javax.swing.JPasswordField registerPasswordConfirm_txtField;
     private javax.swing.JLabel registerPassword_lbl;
@@ -465,11 +530,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JLabel registerUsername_lbl;
     private javax.swing.JTextField registerUsername_txtField;
     private javax.swing.JButton register_btn;
+    private javax.swing.JButton register_cancel_btn;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton studentBackToLogin;
     private javax.swing.JPanel student_panel;
     private javax.swing.JButton teacherBackToLogin;
     private javax.swing.JPanel teacher_panel;
+    private javax.swing.JComboBox<String> user_type_comboBox;
+    private javax.swing.JLabel user_type_lbl;
     private javax.swing.JLabel username_lbl;
     private javax.swing.JTextField username_txtField;
     // End of variables declaration//GEN-END:variables
