@@ -205,26 +205,23 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         register_panel.add(register_cancel_btn, gridBagConstraints);
-
-        registerUsername_txtField.setText("jTextField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         register_panel.add(registerUsername_txtField, gridBagConstraints);
-
-        registerPassword_txtField.setText("jPasswordField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         register_panel.add(registerPassword_txtField, gridBagConstraints);
-
-        registerPasswordConfirm_txtField.setText("jPasswordField2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         register_panel.add(registerPasswordConfirm_txtField, gridBagConstraints);
 
         backToLogin.setText("Back To Login");
