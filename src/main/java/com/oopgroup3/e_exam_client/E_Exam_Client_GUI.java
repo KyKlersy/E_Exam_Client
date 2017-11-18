@@ -8,6 +8,7 @@ package com.oopgroup3.e_exam_client;
 import java.awt.CardLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -39,6 +40,10 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
          
         pack();
         
+    }
+
+    public JLabel getRegister_incorrectPass_label() {
+        return register_incorrectPass_label;
     }
 
     /**
@@ -74,6 +79,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         backToLogin = new javax.swing.JButton();
         user_type_comboBox = new javax.swing.JComboBox<>();
         user_type_lbl = new javax.swing.JLabel();
+        register_incorrectPass_label = new javax.swing.JLabel();
         student_panel = new javax.swing.JPanel();
         studentBackToLogin = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -248,6 +254,13 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         register_panel.add(user_type_lbl, gridBagConstraints);
 
+        register_incorrectPass_label.setForeground(new java.awt.Color(204, 0, 0));
+        register_incorrectPass_label.setText("Incorrect password");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        register_panel.add(register_incorrectPass_label, gridBagConstraints);
+
         cardlayout_container.add(register_panel, "card3");
 
         student_panel.setLayout(new java.awt.GridBagLayout());
@@ -363,6 +376,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
     private void gotoRegisterPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gotoRegisterPanelActionPerformed
         cardLayoutManager.show(cardlayout_container, "register");
+        this.register_incorrectPass_label.setVisible(false);
     }//GEN-LAST:event_gotoRegisterPanelActionPerformed
 
     private void backToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backToLoginActionPerformed
@@ -528,6 +542,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JTextField registerUsername_txtField;
     private javax.swing.JButton register_btn;
     private javax.swing.JButton register_cancel_btn;
+    private javax.swing.JLabel register_incorrectPass_label;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton studentBackToLogin;
     private javax.swing.JPanel student_panel;

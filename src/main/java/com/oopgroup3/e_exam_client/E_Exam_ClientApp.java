@@ -99,15 +99,16 @@ public class E_Exam_ClientApp
                     public void actionPerformed(ActionEvent ae){
                         //on button click event triggered, create and execute a new thread to handle the task.
                         //These can be swing workers / runnable / callables
-                        EXECUTOR.execute(new ClientRegisterThread(GUI.getRegisterUsername_txtField(), GUI.getRegisterPasswordConfirm_txtField(),GUI.getRegisterPasswordConfirm_txtField(),GUI.getUser_type_comboBox(),GUI.getCardLayoutManager(), GUI.getCardContainer() ,responseSharedData , user));   
+                        if (!String.valueOf(GUI.getRegisterPassword_txtField().getPassword()).equals(String.valueOf(GUI.getRegisterPasswordConfirm_txtField().getPassword()))){
+                            GUI.getRegister_incorrectPass_label().setVisible(true);
+                        }
+                        else {
+                            GUI.getRegister_incorrectPass_label().setText("CreateRegisterThread");
+                            EXECUTOR.execute(new ClientRegisterThread(GUI.getRegisterUsername_txtField(), GUI.getRegisterPassword_txtField(),GUI.getRegisterPasswordConfirm_txtField(),
+                                    GUI.getUser_type_comboBox(),GUI.getCardLayoutManager(), GUI.getCardContainer() ,responseSharedData , user));   
+                        }
                     }
                 });
-                
-                
-                
-                
-                
-                
                 /****************************************
                  * End of button handler binding block  *
                  ****************************************/ 

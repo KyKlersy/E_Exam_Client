@@ -5,7 +5,11 @@
  */
 package com.oopgroup3.e_exam_client;
 
+import com.google.gson.Gson;
 import java.awt.CardLayout;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -42,8 +46,66 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
     @Override
     protected String doInBackground() 
     {
+        Message message;
+        String methodName = "Register";
+        String SessionID = "";
+        String[] params = new String[3];
+        params[0] = this.username.getText();
+        params[1] = String.valueOf(this.password.getPassword());
+        params[2] = String.valueOf(this.comboBox.getSelectedIndex() + 1);
+        
+        message = new Message(SessionID, methodName, params);
+        
+        
+        //sending message
+        try 
+        {
+            Socket sendSocket = new Socket("127.0.0.1",64023);    
+            message.send(sendSocket);
+        } 
+        catch (UnknownHostException e)
+        {
+            e.printStackTrace();
+        }
+        catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        
+        String msg = "";
+
+        System.out.println("Attempting to get user");
+        try 
+        {
+            msg = responseSharedData.consume();
+        } catch (InterruptedException ex) 
+        {
+            ex.printStackTrace();
+        }
+        
+        
+        
+        System.out.println("message future: " + msg);
+
+        if(!msg.equals("Failed"))
+        {
+            Gson gson = new Gson();
+            user = gson.fromJson(msg, User.class);
+        }
+        
+        if (user.getUserType() == 1){
+            cardLayoutManager.show(cardContainer, "student");
+            System.out.println("Show student panel");
+        }
+        else{
+            cardLayoutManager.show(cardContainer, "teacher");
+            System.out.println("Show teacher panel");
+        }
+        
+        
         return ("Username: " + username.getText() + "Password: " + String.valueOf(password.getPassword()) + 
-                "Confirm Password: " + String.valueOf(confirmPassword.getPassword()));
+                "Confirm Password: " + String.valueOf(confirmPassword.getPassword()) + "User: " + user.userType);
+        
         
     }
     
