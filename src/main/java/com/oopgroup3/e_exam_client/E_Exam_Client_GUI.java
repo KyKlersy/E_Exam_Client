@@ -5,12 +5,15 @@
  */
 package com.oopgroup3.e_exam_client;
 
+import com.oopgroup3.e_exam_client.Interfaces.BuildPanelInterface;
 import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -18,15 +21,17 @@ import javax.swing.JTextField;
  */
 public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
-    private CardLayout cardLayoutManager = new CardLayout();
-    
+    private final CardLayout cardLayoutManager;
+    private boolean  doonce = true;
     /**
      * Creates new form EExam_GUI
      */
     public E_Exam_Client_GUI() {
         initComponents();
-                 
-        cardlayout_container.setLayout(cardLayoutManager);
+        
+        //cardlayout_container.setLayout(cardLayoutManager);
+        
+        cardLayoutManager = (CardLayout)cardlayout_container.getLayout();
         
         cardlayout_container.add(login_panel, "login");
         cardlayout_container.add(register_panel, "register");
@@ -86,6 +91,8 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         teacherBackToLogin = new javax.swing.JButton();
         exam_panel = new javax.swing.JPanel();
         examBackToLogin = new javax.swing.JButton();
+        examScrollPane = new javax.swing.JScrollPane();
+        examFormContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -342,6 +349,16 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         });
         exam_panel.add(examBackToLogin, new java.awt.GridBagConstraints());
 
+        examFormContainer.setPreferredSize(new java.awt.Dimension(366, 222));
+        examFormContainer.setLayout(new java.awt.GridLayout(0, 1));
+        examScrollPane.setViewportView(examFormContainer);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        exam_panel.add(examScrollPane, gridBagConstraints);
+
         cardlayout_container.add(exam_panel, "card6");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -393,7 +410,37 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_examBackToLoginActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        cardLayoutManager.show(cardlayout_container, "exam");
+        
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                if(doonce)
+                {
+                    ExamQuestion examQuestion = new ExamQuestion(1, 1, "Do fish climb trees", "", "", "", "");
+                    BuildPanelInterface bpi;
+                    for(int row = 0; row < 4; row++)
+                    {
+                        gbc.gridy = row;
+                        //gbc.weightx = 0.5;
+                        //gbc.weighty = 0.5;
+                        bpi = new ExamQuestionTrueFalseControl(1, 1, getExamFormContainer());
+                        //examFormContainer.add(bpi.buildEditableExamPanel(), gbc);
+                        examFormContainer.add(bpi.buildExamPanel(examQuestion));
+                        
+
+                    }
+                    revalidate();
+                    doonce = false;
+                    cardLayoutManager.show(cardlayout_container, "exam");
+                }
+            }
+        });
+                
     }//GEN-LAST:event_jButton6ActionPerformed
 
     
@@ -459,6 +506,16 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
      public JComboBox<String> getUser_type_comboBox() {
         return user_type_comboBox;
     }    
+     
+    /**
+     *
+     * @return JPanel
+     */
+    public JPanel getExamFormContainer() {
+        return examFormContainer;
+    }
+     
+     
     
     /**
      * @param args the command line arguments
@@ -503,12 +560,17 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
 
 
+     
+     
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backToLogin;
     private javax.swing.JButton cancel_login_btn;
     private javax.swing.JPanel cardlayout_container;
     private javax.swing.JButton examBackToLogin;
+    private javax.swing.JPanel examFormContainer;
+    private javax.swing.JScrollPane examScrollPane;
     private javax.swing.JPanel exam_panel;
     private javax.swing.JButton gotoRegisterPanel;
     private javax.swing.JButton gotoStudentPanel;
