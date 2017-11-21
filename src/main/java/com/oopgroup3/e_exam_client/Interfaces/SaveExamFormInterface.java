@@ -6,16 +6,12 @@
 package com.oopgroup3.e_exam_client.Interfaces;
 
 import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestion;
-import javax.swing.JPanel;
 
 /**
  *
  * @author Kyle
  */
-public interface BuildPanelInterface {
-    
-    public JPanel buildExamPanel(ExamQuestion examQuestion);
-    
-    public JPanel buildEditableExamPanel(ExamQuestion examQuestion);
-               
+public interface SaveExamFormInterface 
+{
+    public ExamQuestion saveForm();
 }

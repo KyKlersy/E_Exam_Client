@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.oopgroup3.e_exam_client;
+package com.oopgroup3.e_exam_client.Threads;
 
+import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
+import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.google.gson.Gson;
+import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
+import com.oopgroup3.e_exam_client.User;
+import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.net.Socket;
@@ -27,26 +32,25 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
     private final CardLayout cardLayoutManager;
     private final JPanel cardContainer;
     private final JComboBox<String> comboBox;
-    private User user = null;
+    private User returnedUser;
+    private User user;
     private ResponseSharedData responseSharedData;
 
-    public ClientRegisterThread(JTextField usernameField, JPasswordField passwordField, JPasswordField confirmPassword, JComboBox<String> comboBox, 
-            CardLayout cardLayoutManager, JPanel cardContainer, ResponseSharedData responseSharedData, User user)
+    public ClientRegisterThread(E_Exam_Client_GUI GUI, ResponseSharedData responseSharedData)
     {
-        this.username = usernameField;
-        this.password = passwordField;
-        this.confirmPassword = confirmPassword;
-        this.comboBox = comboBox;
-        this.cardLayoutManager = cardLayoutManager;
-        this.cardContainer = cardContainer;
+        this.username = GUI.getRegisterUsername_txtField();
+        this.password = GUI.getRegisterPassword_txtField();
+        this.confirmPassword = GUI.getRegisterPasswordConfirm_txtField();
+        this.comboBox = GUI.getUser_type_comboBox();
+        this.cardLayoutManager = GUI.getCardLayoutManager();
+        this.cardContainer = GUI.getCardContainer();
         this.responseSharedData = responseSharedData;
-        this.user = user;
     }
 
     @Override
     protected String doInBackground() 
     {
-        Message message;
+        MessageWithResponse responseMessage;
         String methodName = "Register";
         String SessionID = "";
         String[] params = new String[3];
@@ -54,14 +58,14 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         params[1] = String.valueOf(this.password.getPassword());
         params[2] = String.valueOf(this.comboBox.getSelectedIndex() + 1);
         
-        message = new Message(SessionID, methodName, params);
-        
+        responseMessage = new MessageWithResponse(SessionID, methodName, params);
+        responseSharedData.produce(responseMessage);
         
         //sending message
         try 
         {
             Socket sendSocket = new Socket("127.0.0.1",64023);    
-            message.send(sendSocket);
+            responseMessage.send(sendSocket);
         } 
         catch (UnknownHostException e)
         {
@@ -74,10 +78,10 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         
         String msg = "";
 
-        System.out.println("Attempting to get user");
+        print("Attempting to get user");
         try 
         {
-            msg = responseSharedData.consume();
+            msg = responseMessage.getReturnData();
         } catch (InterruptedException ex) 
         {
             ex.printStackTrace();
@@ -85,15 +89,20 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         
         
         
-        System.out.println("message future: " + msg);
+        print("message future: " + msg);
 
         if(!msg.equals("Failed"))
         {
             Gson gson = new Gson();
-            user = gson.fromJson(msg, User.class);
+            returnedUser = gson.fromJson(msg, User.class);
+            user = User.getUserInstance();
+            user.setSessionID(returnedUser.getSessionID());
+            user.setUserID(returnedUser.getUserID());
+            user.setUserType(returnedUser.getUserType());
+            user.setUserFirstName(returnedUser.getUserFirstName());
         }
         
-        if (user.getUserType() == 1){
+        if (returnedUser.getUserType() == 1){
             cardLayoutManager.show(cardContainer, "student");
             System.out.println("Show student panel");
         }
@@ -104,7 +113,7 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         
         
         return ("Username: " + username.getText() + "Password: " + String.valueOf(password.getPassword()) + 
-                "Confirm Password: " + String.valueOf(confirmPassword.getPassword()) + "User: " + user.userType);
+                "Confirm Password: " + String.valueOf(confirmPassword.getPassword()) + "User: " + returnedUser.getUserType());
         
         
     }

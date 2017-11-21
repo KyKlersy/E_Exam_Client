@@ -1,11 +1,17 @@
 
-package com.oopgroup3.e_exam_client;
+package com.oopgroup3.e_exam_client.Threads;
 
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
+import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
+import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.google.gson.Gson;
+import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
+import com.oopgroup3.e_exam_client.User;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -17,40 +23,46 @@ import javax.swing.SwingWorker;
  */
 public class ClientLoginThread extends SwingWorker<String, Object>{
 
+    private final E_Exam_Client_GUI GUI;
     private final JTextField username;
     private final JPasswordField password;
     private final CardLayout cardLayoutManager;
     private final JPanel cardContainer;
-    private User user = null;
+    private User returnedUser;
+    private User user;
     private ResponseSharedData responseSharedData;
+    private final ExecutorService EXECUTOR;
 
     
-    public ClientLoginThread(JTextField usernameField, JPasswordField passwordField, CardLayout cardLayoutManager, JPanel cardContainer, ResponseSharedData responseSharedData, User user)
+    public ClientLoginThread(E_Exam_Client_GUI GUI, ExecutorService executor, ResponseSharedData responseSharedData)
     {
-        this.username = usernameField;
-        this.password = passwordField;
+        this.GUI = GUI;
+        this.username = GUI.getUsernameTextField();
+        this.password = GUI.getPassword_txtField();
+        this.cardLayoutManager = GUI.getCardLayoutManager();
+        this.cardContainer = GUI.getCardContainer();   
+        this.EXECUTOR = executor;
         this.responseSharedData = responseSharedData;
-        this.cardLayoutManager = cardLayoutManager;
-        this.cardContainer = cardContainer;
-        this.user = user;
+        
     }
 
     @Override
     protected String doInBackground() 
     {
-        Message message;
+        MessageWithResponse responseMessage;
         String methodName = "Login";
         String SessionID = "";
         String[] params = new String[2];
         params[0] = this.username.getText();
         params[1] = String.valueOf(this.password.getPassword());
         
-        message = new Message(SessionID, methodName, params);
+        responseMessage = new MessageWithResponse(SessionID, methodName, params);
+        responseSharedData.produce(responseMessage);
         
         try 
         {
             Socket sendSocket = new Socket("127.0.0.1",64023);    
-            message.send(sendSocket);
+            responseMessage.send(sendSocket);
         } 
         catch (UnknownHostException e)
         {
@@ -66,8 +78,9 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
         System.out.println("Attempting to get user");
         try 
         {
-            msg = responseSharedData.consume();
-        } catch (InterruptedException ex) 
+            msg = responseMessage.getReturnData();
+        } 
+        catch (InterruptedException ex) 
         {
             ex.printStackTrace();
         }
@@ -79,21 +92,13 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
         if(!msg.equals("Failed"))
         {
             Gson gson = new Gson();
-            user = gson.fromJson(msg, User.class);
+            returnedUser = gson.fromJson(msg, User.class);
+            user = User.getUserInstance();
+            user.setSessionID(returnedUser.getSessionID());
+            user.setUserID(returnedUser.getUserID());
+            user.setUserType(returnedUser.getUserType());
+            user.setUserFirstName(returnedUser.getUserFirstName());
         }
-        
-        
-        /* Ignore this code, future code for handling data retreival and population of 2nd / 3rd panels depending on user login type.
-        String ExamData;
-        try 
-        {
-            ExamData = responseSharedData.consume();
-        } 
-        catch (InterruptedException ex) 
-        {
-            ex.printStackTrace();
-        }
-*/
         
         return ("Username: " + user.getUserFirstName() + " UserID: " + user.getUserID()+ " UserType: "+ user.getUserType()+ " SessionID: " + user.getSessionID());
         
@@ -105,12 +110,15 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
         try
         {
             
-            if(user.isAuthenticated() && user.userType == 1)
+            if(user.isAuthenticated() && user.getUserType() == 1)
             {
                 cardLayoutManager.show(cardContainer, "student");
             }
-            else if(user.isAuthenticated() && user.userType == 2)
+            else if(user.isAuthenticated() && user.getUserType() == 2)
             {
+                /* User is of type teacher create a singleton instance of the exam creation manager. */
+                ExamFormCreationManager efcm = ExamFormCreationManager.getInstanceExamFormCreationManager();
+                efcm.setRootPanel(GUI.getExamCreationFormPanel());
                 cardLayoutManager.show(cardContainer, "teacher");
             }
             else

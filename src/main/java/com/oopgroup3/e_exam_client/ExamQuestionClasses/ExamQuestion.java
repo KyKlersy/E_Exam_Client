@@ -1,13 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.oopgroup3.e_exam_client;
+package com.oopgroup3.e_exam_client.ExamQuestionClasses;
 
 /**
  *
+ * Data class used to represent the exam question,
+ * each exam question consists of the question number, its question type
+ * 1 being a true/false form, 2 being a 4 option multiple choice form.
+ * 
  * @author carlo
+ * 
  */
 public class ExamQuestion 
 {
@@ -20,10 +20,7 @@ public class ExamQuestion
     private String Question_3 = "";
     private String Question_4 = "";
     
-    public ExamQuestion()
-    {
-        
-    }
+    public ExamQuestion(){} //provide default constructor.
     
     /*The constructor for this class should also 
     be written such that passing all 6 fields during 

@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.oopgroup3.e_exam_client;
+package com.oopgroup3.e_exam_client.ServerResponseHandler;
+
+import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 
 /**
  *
@@ -13,13 +15,13 @@ public class ResponseWorker implements Runnable{
 
     private String status;
     private String loginData;
-    private ResponseSharedData responseSharedData;
+    private MessageWithResponse responseData;
 
-    public ResponseWorker(String status, String loginData, ResponseSharedData responseSharedData)
+    public ResponseWorker(String status, String loginData, MessageWithResponse responseData)
     {
         this.status = status;
         this.loginData = loginData;
-        this.responseSharedData = responseSharedData;
+        this.responseData = responseData;
     }
 
     @Override
@@ -27,12 +29,12 @@ public class ResponseWorker implements Runnable{
        
         if(status.equals("Success"))
         {
-            responseSharedData.produce(loginData);
+            responseData.putReturnData(loginData);
         }
         
         if(status.equals("Failed"))
         {
-            responseSharedData.produce("Failed");
+            responseData.putReturnData("Failed");
         }
     }
     

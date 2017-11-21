@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.oopgroup3.e_exam_client;
+package com.oopgroup3.e_exam_client.MessagingClasses;
 
 import com.google.gson.Gson;
 import java.io.DataOutputStream;
@@ -20,6 +20,12 @@ public class Message {
     private String Method;
     private String[] parameters;
 
+    public Message(String SessionID, String Method)
+    {
+        this.SessionID = SessionID;
+        this.Method = Method;
+    }
+    
     public Message(String SessionID, String Method, String[] parameters) {
         this.SessionID = SessionID;
         this.Method = Method;

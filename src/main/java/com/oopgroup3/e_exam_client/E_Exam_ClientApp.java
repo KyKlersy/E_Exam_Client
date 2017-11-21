@@ -5,6 +5,11 @@
  */
 package com.oopgroup3.e_exam_client;
 
+import com.oopgroup3.e_exam_client.Threads.ClientRegisterThread;
+import com.oopgroup3.e_exam_client.Threads.ClientLoginThread;
+import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
+import com.oopgroup3.e_exam_client.ServerResponseHandler.ClientServerResponseThread;
+import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,10 +17,8 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JButton;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
+import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 
 /**
  *
@@ -31,12 +34,9 @@ public class E_Exam_ClientApp
     
     /* Message passing class for inter thread communication */
     private static ResponseSharedData responseSharedData = new ResponseSharedData();
-    
-    
+        
     public static void main(String[] args) {
-        
-        User user = null;
-        
+                
         /***********************************************
         * Setup the GUI frame by placing it on the EDT *
         ************************************************/
@@ -72,8 +72,9 @@ public class E_Exam_ClientApp
             @Override
             public void run() 
             {
-                //Getting Jbutton reference from gui and adding a button event listner
+                /* Login Panel button event for handling user authenthication */
                 JButton loginButton = GUI.getLoginButton();
+                //Getting Jbutton reference from gui and adding a button event listner
                 loginButton.addActionListener(new ActionListener() 
                 {
                     @Override
@@ -81,8 +82,66 @@ public class E_Exam_ClientApp
                     {
                         //on button click event triggered, create and execute a new thread to handle the task.
                         //These can be swing workers / runnable / callables
-                        EXECUTOR.execute(new ClientLoginThread(GUI.getUsernameTextField(), GUI.getPassword_txtField(), GUI.getCardLayoutManager(), GUI.getCardContainer() ,responseSharedData , user));   
+                        EXECUTOR.execute(new ClientLoginThread(GUI, EXECUTOR, responseSharedData));   
                         
+                        
+                    }
+                });
+                
+                
+                /* Register Panel button event for handling registration of new user */
+                JButton registerButton = GUI.getRegister_btn();
+                registerButton.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent ae)
+                    {
+                        //on button click event triggered, create and execute a new thread to handle the task.
+                        //These can be swing workers / runnable / callables
+                        if (!String.valueOf(GUI.getRegisterPassword_txtField().getPassword()).equals(String.valueOf(GUI.getRegisterPasswordConfirm_txtField().getPassword()))){
+                            GUI.getRegister_incorrectPass_label().setVisible(true);
+                        }
+                        else {
+                            GUI.getRegister_incorrectPass_label().setText("CreateRegisterThread");
+                            EXECUTOR.execute(new ClientRegisterThread(GUI ,responseSharedData));   
+                        }
+                    }
+                });    
+                
+                /*  Teacher control panel button event for creating exams */                
+                JButton createExam = GUI.getCreateExamBtn();
+                createExam.addActionListener(new ActionListener() 
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        print(User.getUserInstance().getUserFirstName());
+                        GUI.switchCardView("createExam");
+                    }
+                });
+                
+                /*******************************************************************
+                * Teacher control panel button event for saving a created exam     *
+                * into the database on the server.                                 *
+                ********************************************************************/
+                JButton createExamForm = GUI.getCreateExamFormBtn();
+                createExamForm.addActionListener(new ActionListener() 
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        EXECUTOR.execute(new SaveExamCreationThread());
+                    }
+                });
+                
+                /*  Teacher control panel button event for editing exams */    
+                JButton editExamForm = GUI.getEditExamBtn();
+                editExamForm.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        
+                        GUI.switchCardView("editExam");
                     }
                 });
                 
@@ -92,27 +151,25 @@ public class E_Exam_ClientApp
                  *                                                                                                *
                  *                                                                                                *
                  **************************************************************************************************/
-                        //Getting Jbutton reference from gui and adding a button event listner
-                JButton registerButton = GUI.getRegister_btn();
-                registerButton.addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent ae){
-                        //on button click event triggered, create and execute a new thread to handle the task.
-                        //These can be swing workers / runnable / callables
-                        if (!String.valueOf(GUI.getRegisterPassword_txtField().getPassword()).equals(String.valueOf(GUI.getRegisterPasswordConfirm_txtField().getPassword()))){
-                            GUI.getRegister_incorrectPass_label().setVisible(true);
-                        }
-                        else {
-                            GUI.getRegister_incorrectPass_label().setText("CreateRegisterThread");
-                            EXECUTOR.execute(new ClientRegisterThread(GUI.getRegisterUsername_txtField(), GUI.getRegisterPassword_txtField(),GUI.getRegisterPasswordConfirm_txtField(),
-                                    GUI.getUser_type_comboBox(),GUI.getCardLayoutManager(), GUI.getCardContainer() ,responseSharedData , user));   
-                        }
-                    }
-                });
+                      
+                /*************************************************************** 
+                * Teacher control panel button event for saving an edited exam *
+                * into the database on the server.                             *  
+                ****************************************************************/
+                
+                
+                
+                
+
+
+
+                
+                
+                
                 /****************************************
                  * End of button handler binding block  *
                  ****************************************/ 
-            }   
+            };   
         });              
-    }        
+    }  
 }

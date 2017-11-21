@@ -1,28 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oopgroup3.e_exam_client;
 
 /**
- *
+ * This class handles the responsibility of the user data returned when the 
+ * user is authenticated.
  * @author tri.le
  */
-public class User {
-    String sessionID;
-    int userType;
-    int userID;
-    String userFirstName;
+public class User 
+{
+    private static User userInstance;
+    private String sessionID;
+    private int userType;
+    private int userID;
+    private String userFirstName;
 
-    public User(String sessionID, int userType, int userID, String userFirstName) {
-        this.sessionID = sessionID;
-        this.userType = userType;
-        this.userID = userID;
-        this.userFirstName = userFirstName;
-    }
+    private User(){}
     
-   
+    public static synchronized User getUserInstance()
+    {
+        if(userInstance == null)
+        {
+            userInstance = new User();
+        }
+        
+        return userInstance;
+    }
+
     public String getSessionID() {
         return sessionID;
     }
