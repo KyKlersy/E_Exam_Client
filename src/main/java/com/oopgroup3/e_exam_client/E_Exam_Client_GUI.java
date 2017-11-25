@@ -13,9 +13,11 @@ import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionMultipleChoic
 import com.oopgroup3.e_exam_client.Interfaces.BuildPanelInterface;
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -92,7 +94,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         student_panel = new javax.swing.JPanel();
         studentBackToLogin = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        availableExams = new javax.swing.JList<>();
+        availableStudentExams = new javax.swing.JList<>();
         welcomeLbl = new javax.swing.JLabel();
         usernameLbl = new javax.swing.JLabel();
         studentTakeExamBtn = new javax.swing.JButton();
@@ -308,12 +310,8 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         student_panel.add(studentBackToLogin, gridBagConstraints);
 
-        availableExams.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(availableExams);
+        availableStudentExams.setModel(new DefaultListModel<String>());
+        jScrollPane1.setViewportView(availableStudentExams);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -385,11 +383,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 120, 0);
         teacher_panel.add(assignExamButton, gridBagConstraints);
 
-        availableTeacherExams.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        availableTeacherExams.setModel(new DefaultListModel<String>());
         jScrollPane2.setViewportView(availableTeacherExams);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -449,11 +443,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
         trueFalseFormAddBtn.setText("True / False Form");
         trueFalseFormAddBtn.setPreferredSize(new java.awt.Dimension(140, 40));
-        trueFalseFormAddBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trueFalseFormAddBtnActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -463,11 +452,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
         multipleChoiceFormAddBtn.setText("Multiple Choice Form");
         multipleChoiceFormAddBtn.setPreferredSize(new java.awt.Dimension(140, 40));
-        multipleChoiceFormAddBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                multipleChoiceFormAddBtnActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -494,9 +478,11 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         examCreation_panel.add(createExamFormBtn, gridBagConstraints);
 
-        examFormBuilder_scrollPane.setPreferredSize(new java.awt.Dimension(300, 450));
+        examFormBuilder_scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        examFormBuilder_scrollPane.setHorizontalScrollBar(null);
+        examFormBuilder_scrollPane.setPreferredSize(new java.awt.Dimension(525, 650));
 
-        examFormBuilder_panel.setLayout(new java.awt.GridLayout(0, 1, 0, 4));
+        examFormBuilder_panel.setLayout(new java.awt.GridLayout(0, 1, 2, 4));
         examFormBuilder_scrollPane.setViewportView(examFormBuilder_panel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -559,6 +545,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         examEdit_panel.add(editExamFormBtn, gridBagConstraints);
 
+        examFormEditor_scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         examFormEditor_scrollPane.setPreferredSize(new java.awt.Dimension(300, 450));
 
         examFormEditor_panel.setLayout(new java.awt.GridLayout(0, 1, 0, 4));
@@ -619,18 +606,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         cardLayoutManager.show(cardlayout_container, "teacher");
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void trueFalseFormAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trueFalseFormAddBtnActionPerformed
-        ExamQuestionFormControl eqfc = new ExamQuestionTrueFalseControl();
-        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null, true);
-        
-    }//GEN-LAST:event_trueFalseFormAddBtnActionPerformed
-
-    private void multipleChoiceFormAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipleChoiceFormAddBtnActionPerformed
-        ExamQuestionFormControl eqfc = new ExamQuestionMultipleChoiceFormControl();
-        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null,true);
-
-    }//GEN-LAST:event_multipleChoiceFormAddBtnActionPerformed
-
     private void trueFalseFormAddEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trueFalseFormAddEditBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_trueFalseFormAddEditBtnActionPerformed
@@ -640,7 +615,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_multipleChoiceFormAddEditBtnActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        cardLayoutManager.show(cardlayout_container, "teacher");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public JButton getCreateExamFormBtn() {
@@ -723,7 +698,16 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     public JPanel getExamFormEditor_panel() {
         return examFormEditor_panel;
     }
+
+    public JButton getMultipleChoiceFormAddBtn() {
+        return multipleChoiceFormAddBtn;
+    }
+
+    public JButton getTrueFalseFormAddBtn() {
+        return trueFalseFormAddBtn;
+    }
      
+    
      
     /**
      *
@@ -740,6 +724,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     public JButton getEditExamFormBtn() {
         return editExamFormBtn;
     } 
+    
+    public JList<String> getAvailableTeacherExams() {
+        return availableTeacherExams;
+    }    
+    
+    public JList<String> getAvailableStudentExams() {
+        return availableStudentExams;
+    }    
      
     /**
      * @param args the command line arguments
@@ -785,6 +777,13 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
 
 
+    
+
+
+
+
+
+
 
 
 
@@ -794,7 +793,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton assignExamButton;
-    private javax.swing.JList<String> availableExams;
+    private javax.swing.JList<String> availableStudentExams;
     private javax.swing.JList<String> availableTeacherExams;
     private javax.swing.JButton backToLogin;
     private javax.swing.JButton cancelStudentExam;

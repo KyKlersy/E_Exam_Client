@@ -1,8 +1,11 @@
 package com.oopgroup3.e_exam_client.ExamQuestionClasses;
 
+import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
 import com.oopgroup3.e_exam_client.Interfaces.BuildPanelInterface;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -34,12 +37,14 @@ public class ExamFormCreationManager
     private final ConcurrentHashMap<String, JPanel> removeButtonHashMap;
     private JPanel rootPanel = null;
     private AtomicInteger atomicIntegerQuestionNumber;
+    private AtomicInteger atomicIntegerGridY;
     
     private ExamFormCreationManager()
     {
         examHashMap = Collections.synchronizedMap(new LinkedHashMap<>());
         removeButtonHashMap = new ConcurrentHashMap<>();
         atomicIntegerQuestionNumber = new AtomicInteger(0);
+        atomicIntegerGridY = new AtomicInteger(0);
     }
     
     public static synchronized ExamFormCreationManager getInstanceExamFormCreationManager()
@@ -61,11 +66,13 @@ public class ExamFormCreationManager
         return rootPanel;
     }
 
-    public void addExamQuestion(ExamQuestionFormControl examQuestionForm, ExamQuestion examQuestion, boolean editable)
-    {
+    public void addExamQuestion(ExamQuestionFormControl examQuestionForm, ExamQuestion examQuestion, boolean editable, E_Exam_Client_GUI GUI)
+    {        
+        try {
         if(rootPanel != null)
         {
             atomicIntegerQuestionNumber.getAndIncrement();
+            atomicIntegerGridY.getAndIncrement();
             examQuestionForm.setFormQuestionNumber(atomicIntegerQuestionNumber);
             BuildPanelInterface bpi = examQuestionForm;
             JPanel newFormPAnel;
@@ -93,6 +100,7 @@ public class ExamFormCreationManager
                             try 
                             {
                                 removeFormControl((JButton)ae.getSource());
+                                rootPanel.validate();
                             } catch (Exception e) 
                             {
                                 e.printStackTrace();
@@ -105,9 +113,27 @@ public class ExamFormCreationManager
                 }     
             });
             
-            rootPanel.add(newFormPAnel);
-            rootPanel.revalidate();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    /*
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridy = atomicIntegerGridY.get();
+                    gbc.weightx = 1.0;
+                    gbc.weighty = 1.0;
+                    gbc.fill = GridBagConstraints.BOTH;
+                    rootPanel.add(newFormPAnel, gbc);*/
+                    rootPanel.add(newFormPAnel, new BorderLayout(0, 4));
+                    rootPanel.revalidate();
+                    //GUI.pack();
+                    
+                }
+            });
+                   
         }
+        } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
     
     public ExamQuestionFormControl getExamQuestionFormControl(String panelName)

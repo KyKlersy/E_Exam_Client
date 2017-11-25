@@ -5,6 +5,10 @@
  */
 package com.oopgroup3.e_exam_client;
 
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionFormControl;
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionMultipleChoiceFormControl;
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionTrueFalseControl;
 import com.oopgroup3.e_exam_client.Threads.ClientRegisterThread;
 import com.oopgroup3.e_exam_client.Threads.ClientLoginThread;
 import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
@@ -19,6 +23,7 @@ import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
+import javax.swing.JList;
 
 /**
  *
@@ -34,9 +39,12 @@ public class E_Exam_ClientApp
     
     /* Message passing class for inter thread communication */
     private static ResponseSharedData responseSharedData = new ResponseSharedData();
+    
+    private static E_Exam Exam;
         
     public static void main(String[] args) {
-                
+         
+        
         /***********************************************
         * Setup the GUI frame by placing it on the EDT *
         ************************************************/
@@ -46,6 +54,8 @@ public class E_Exam_ClientApp
             public void run() 
             {
                GUI = new E_Exam_Client_GUI();
+               Exam = new E_Exam(GUI, responseSharedData, EXECUTOR);
+               
                GUI.setVisible(true);
                
                GUI.addWindowListener(new WindowAdapter() 
@@ -82,9 +92,8 @@ public class E_Exam_ClientApp
                     {
                         //on button click event triggered, create and execute a new thread to handle the task.
                         //These can be swing workers / runnable / callables
-                        EXECUTOR.execute(new ClientLoginThread(GUI, EXECUTOR, responseSharedData));   
-                        
-                        
+                        EXECUTOR.execute(new ClientLoginThread(GUI, Exam, EXECUTOR, responseSharedData));   
+                          
                     }
                 });
                 
@@ -107,6 +116,7 @@ public class E_Exam_ClientApp
                         }
                     }
                 });    
+                
                 
                 /*  Teacher control panel button event for creating exams */                
                 JButton createExam = GUI.getCreateExamBtn();
@@ -134,13 +144,36 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                JButton addTrueFalseForm = GUI.getTrueFalseFormAddBtn();
+                addTrueFalseForm.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        ExamQuestionFormControl eqfc = new ExamQuestionTrueFalseControl();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null, true, GUI);  
+                        //GUI.pack();
+                    }
+                });
+                
+                JButton addMultipleChoiceForm = GUI.getMultipleChoiceFormAddBtn();
+                addMultipleChoiceForm.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        ExamQuestionFormControl eqfc = new ExamQuestionMultipleChoiceFormControl();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null,true, GUI);
+                        //GUI.pack();
+                    }
+                });
+                
+                
+                
                 /*  Teacher control panel button event for editing exams */    
                 JButton editExamForm = GUI.getEditExamBtn();
                 editExamForm.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         
-                        
+                        print("Selected Exam ID: " + Exam.getSelectedExamID());
                         GUI.switchCardView("editExam");
                     }
                 });

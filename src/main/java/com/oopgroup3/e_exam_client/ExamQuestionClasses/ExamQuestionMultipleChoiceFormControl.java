@@ -1,6 +1,7 @@
 
 package com.oopgroup3.e_exam_client.ExamQuestionClasses;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -140,6 +141,7 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
         Border margin = new EmptyBorder(5,5,5,5);
         Border border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         panel.setBorder(new CompoundBorder(border, margin));
+        panel.setPreferredSize(new Dimension(500, 300));
         return panel;
     }
     
