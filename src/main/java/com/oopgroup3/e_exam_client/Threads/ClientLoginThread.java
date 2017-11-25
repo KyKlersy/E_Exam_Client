@@ -5,8 +5,10 @@ import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.google.gson.Gson;
+import com.oopgroup3.e_exam_client.E_Exam;
 import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
 import com.oopgroup3.e_exam_client.User;
+import com.oopgroup3.e_exam_client.UserType;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.net.Socket;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 
 /**
  *
@@ -24,6 +27,7 @@ import javax.swing.SwingWorker;
 public class ClientLoginThread extends SwingWorker<String, Object>{
 
     private final E_Exam_Client_GUI GUI;
+    private final E_Exam exam;
     private final JTextField username;
     private final JPasswordField password;
     private final CardLayout cardLayoutManager;
@@ -32,11 +36,12 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
     private User user;
     private ResponseSharedData responseSharedData;
     private final ExecutorService EXECUTOR;
-
+    private UserType userType;
     
-    public ClientLoginThread(E_Exam_Client_GUI GUI, ExecutorService executor, ResponseSharedData responseSharedData)
+    public ClientLoginThread(E_Exam_Client_GUI GUI, E_Exam exam ,ExecutorService executor, ResponseSharedData responseSharedData)
     {
         this.GUI = GUI;
+        this.exam = exam;
         this.username = GUI.getUsernameTextField();
         this.password = GUI.getPassword_txtField();
         this.cardLayoutManager = GUI.getCardLayoutManager();
@@ -98,6 +103,14 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
             user.setUserID(returnedUser.getUserID());
             user.setUserType(returnedUser.getUserType());
             user.setUserFirstName(returnedUser.getUserFirstName());
+            
+            for(UserType ut : UserType.values())
+            {
+                if(ut.getUserType() == user.getUserType())
+                {
+                    userType = ut;
+                }
+            }
         }
         
         return ("Username: " + user.getUserFirstName() + " UserID: " + user.getUserID()+ " UserType: "+ user.getUserType()+ " SessionID: " + user.getSessionID());
@@ -107,18 +120,42 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
     @Override
     protected void done()
     {
+        print("UserType: " + userType);
         try
         {
             
-            if(user.isAuthenticated() && user.getUserType() == 1)
+            if(user.isAuthenticated() && (userType == UserType.Student))
             {
+                
+                ExamFormCreationManager efcm = ExamFormCreationManager.getInstanceExamFormCreationManager();
+                efcm.setRootPanel(GUI.getExamCreationFormPanel());
+                try 
+                {
+                    exam.setUserType(UserType.Student);
+                } catch (Exception e) 
+                {
+                    e.printStackTrace();
+                }
+                
+                
                 cardLayoutManager.show(cardContainer, "student");
             }
-            else if(user.isAuthenticated() && user.getUserType() == 2)
+            else if(user.isAuthenticated() && (userType == UserType.Teacher))
             {
+                print("User auth'd is of type teacher");
                 /* User is of type teacher create a singleton instance of the exam creation manager. */
                 ExamFormCreationManager efcm = ExamFormCreationManager.getInstanceExamFormCreationManager();
                 efcm.setRootPanel(GUI.getExamCreationFormPanel());
+                try 
+                {
+                    exam.setUserType(UserType.Teacher);
+                } catch (Exception e) 
+                {
+                    e.printStackTrace();
+                }
+                
+                
+                
                 cardLayoutManager.show(cardContainer, "teacher");
             }
             else
