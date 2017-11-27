@@ -195,7 +195,7 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
 
     @Override
     public ExamQuestion saveForm() {
-        return new ExamQuestion(getQuestionNumber(), getQuestionType(), questionOne.getText(), answerOne.getText(), answerTwo.getText(), answerThree.getText(), answerFour.getText());
+        return new ExamQuestion(getQuestionNumber(), 2, questionOne.getText(), answerOne.getText(), answerTwo.getText(), answerThree.getText(), answerFour.getText());
     }
 
     @Override

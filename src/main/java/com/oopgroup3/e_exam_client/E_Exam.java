@@ -5,6 +5,7 @@
  */
 package com.oopgroup3.e_exam_client;
 
+import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import java.util.concurrent.ExecutorService;
 
@@ -47,8 +48,24 @@ public class E_Exam
         return this.examList;
     }
     
+    public E_Exam_Client_GUI getGUI()
+    {
+        return this.GUI;
+    }
+    
     public int getSelectedExamID()
     {
         return examList.returnExamDatabaseID();
+    }
+    
+    public final void clearList()
+    {
+        ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
+        this.examList.clear();
+    }
+    
+    public void logout()
+    {
+        clearList();
     }
 }

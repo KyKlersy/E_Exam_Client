@@ -149,7 +149,7 @@ public class ExamQuestionTrueFalseControl extends ExamQuestionFormControl
     @Override
     public ExamQuestion saveForm() 
     {  
-        return new ExamQuestion(getQuestionNumber(), getQuestionType(), questionOne.getText(), "", "", "", "");
+        return new ExamQuestion(getQuestionNumber(), 1, questionOne.getText(), "", "", "", "");
     }
 
     @Override

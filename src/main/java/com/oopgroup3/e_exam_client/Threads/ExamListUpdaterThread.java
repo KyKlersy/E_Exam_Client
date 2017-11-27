@@ -92,8 +92,11 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
     {
         
         examNameList.forEach(examName -> {
+            print("List item: " + examName);
             defaultListModel.addElement(examName);
         });
+        
+        
         
         
     }

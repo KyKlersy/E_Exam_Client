@@ -80,7 +80,7 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
 
         String msg = "";
 
-        System.out.println("Attempting to get user");
+        print("Attempting to get user");
         try 
         {
             msg = responseMessage.getReturnData();
@@ -92,7 +92,7 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
         
         
         
-        System.out.println("message future: " + msg);
+        print("message future: " + msg);
 
         if(!msg.equals("Failed"))
         {
@@ -111,6 +111,9 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
                     userType = ut;
                 }
             }
+            
+            GUI.getUsername_txtField().setText("");
+            GUI.getPassword_txtField().setText("");
         }
         
         return ("Username: " + user.getUserFirstName() + " UserID: " + user.getUserID()+ " UserType: "+ user.getUserType()+ " SessionID: " + user.getSessionID());
