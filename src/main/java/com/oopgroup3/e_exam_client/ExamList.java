@@ -44,6 +44,7 @@ public class ExamList
     {
         examNameList.clear();
         examIDList.clear();
+        defaultListModel.removeAllElements();
         
         EXECUTOR.execute(new ExamListUpdaterThread(responseSharedData, examNameList, examIDList, defaultListModel));
  
@@ -54,5 +55,10 @@ public class ExamList
         return examIDList.get(examJList.getSelectedIndex());
     }
     
+    public void clear()
+    {
+        examNameList.clear();
+        examIDList.clear();
+    }
     
 }

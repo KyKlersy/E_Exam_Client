@@ -14,6 +14,7 @@ import com.oopgroup3.e_exam_client.Threads.ClientLoginThread;
 import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ClientServerResponseThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
+import com.oopgroup3.e_exam_client.Threads.LoadExamThread;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -97,6 +98,16 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                JButton cancelLoginButton = GUI.getCancel_login_btn();
+                cancelLoginButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        GUI.getUsername_txtField().setText("");
+                        GUI.getPassword_txtField().setText("");
+                        
+                    }
+                });
                 
                 /* Register Panel button event for handling registration of new user */
                 JButton registerButton = GUI.getRegister_btn();
@@ -111,14 +122,32 @@ public class E_Exam_ClientApp
                             GUI.getRegister_incorrectPass_label().setVisible(true);
                         }
                         else {
-                            GUI.getRegister_incorrectPass_label().setText("CreateRegisterThread");
+                            GUI.getRegister_incorrectPass_label().setText("");
+                            GUI.getRegister_incorrectPass_label().setVisible(false);
                             EXECUTOR.execute(new ClientRegisterThread(GUI ,responseSharedData));   
                         }
                     }
                 });    
                 
+                JButton registerCancelButton = GUI.getRegister_cancel_btn();
+                registerCancelButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae)
+                    {
+                        
+                        GUI.getRegisterUsername_txtField().setText("");
+                        GUI.getRegisterPassword_txtField().setText("");
+                        GUI.getRegisterPasswordConfirm_txtField().setText("");
+                        GUI.switchCardView("login");
+        
+                    }
+                });
+                  
                 
-                /*  Teacher control panel button event for creating exams */                
+                /*******************************************************************  
+                *   Teacher control panel button event for switching to the        *
+                *   creating exams view                                            *
+                ********************************************************************/                
                 JButton createExam = GUI.getCreateExamBtn();
                 createExam.addActionListener(new ActionListener() 
                 {
@@ -126,6 +155,7 @@ public class E_Exam_ClientApp
                     public void actionPerformed(ActionEvent ae) 
                     {
                         print(User.getUserInstance().getUserFirstName());
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().setRootPanel(GUI.getExamCreationFormPanel());
                         GUI.switchCardView("createExam");
                     }
                 });
@@ -140,7 +170,14 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) 
                     {
-                        EXECUTOR.execute(new SaveExamCreationThread());
+                        if(!GUI.getCreateExamNameTextField().getText().equals(""))
+                        {    
+                            EXECUTOR.execute(new SaveExamCreationThread("CreateExam", Exam, responseSharedData));
+                        }
+                        else
+                        {
+                            print("Exam name invalid");
+                        }
                     }
                 });
                 
@@ -149,8 +186,7 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         ExamQuestionFormControl eqfc = new ExamQuestionTrueFalseControl();
-                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null, true, GUI);  
-                        //GUI.pack();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null, true);  
                     }
                 });
                 
@@ -160,31 +196,97 @@ public class E_Exam_ClientApp
                     public void actionPerformed(ActionEvent ae) {
                         
                         ExamQuestionFormControl eqfc = new ExamQuestionMultipleChoiceFormControl();
-                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null,true, GUI);
-                        //GUI.pack();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null,true);
                     }
                 });
                 
-                
+                JButton createExamFormBackButton = GUI.getExamCreationBackBtn();
+                createExamFormBackButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        GUI.getCreateExamNameTextField().setText("");
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().resetAtomicInts();
+                        GUI.switchCardView("teacher");
+                    }
+                });
                 
                 /*  Teacher control panel button event for editing exams */    
                 JButton editExamForm = GUI.getEditExamBtn();
                 editExamForm.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().setRootPanel(GUI.getExamFormEditor_panel());
                         print("Selected Exam ID: " + Exam.getSelectedExamID());
-                        GUI.switchCardView("editExam");
+                        if(Exam.getSelectedExamID() > -1)
+                        {
+                            EXECUTOR.execute(new LoadExamThread(Exam.getSelectedExamID(), true, responseSharedData));
+                            GUI.switchCardView("editExam");
+                        }
                     }
                 });
                 
-                /**************************************************************************************************
-                 *                                                                                                *
-                 * Add your handlers for your buttons below inside this block for binding.                        *
-                 *                                                                                                *
-                 *                                                                                                *
-                 **************************************************************************************************/
-                      
+                JButton updateEditExam = GUI.getEditExamFormBtn();
+                updateEditExam.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+
+                        EXECUTOR.execute(new SaveExamCreationThread("EditExam", Exam, responseSharedData));
+    
+                    }
+                });
+                
+                JButton addTrueFalseFormEdit = GUI.getTrueFalseFormAddEditBtn();
+                addTrueFalseFormEdit.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        ExamQuestionFormControl eqfc = new ExamQuestionTrueFalseControl();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null, true);  
+                    }
+                });
+                
+                JButton addMultipleChoiceFormEdit = GUI.getMultipleChoiceFormAddEditBtn();
+                addMultipleChoiceFormEdit.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        ExamQuestionFormControl eqfc = new ExamQuestionMultipleChoiceFormControl();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().addExamQuestion(eqfc, null,true);
+                    }
+                });
+
+                
+                JButton editFormBackButton = GUI.getEditReturnToTeacherPanelBtn();
+                editFormBackButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().resetAtomicInts();
+                        GUI.switchCardView("teacher");
+                    }
+                });
+
+                /*
+                    Student Panel Controls
+                */
+                JButton studentTakeExam = GUI.getStudentTakeExamBtn();
+                studentTakeExam.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().setRootPanel(GUI.getExamFormContainer());
+                        print("Selected Exam ID: " + Exam.getSelectedExamID());
+                        
+                        EXECUTOR.execute(new LoadExamThread(Exam.getSelectedExamID(), true, responseSharedData));
+                        GUI.switchCardView("exam");
+                        
+                    }
+                });
+                
+                
                 /*************************************************************** 
                 * Teacher control panel button event for saving an edited exam *
                 * into the database on the server.                             *  

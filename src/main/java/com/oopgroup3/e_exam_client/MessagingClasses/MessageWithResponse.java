@@ -16,6 +16,11 @@ public class MessageWithResponse extends Message{
     
     private final BlockingQueue<String> returnedData;
     
+    public MessageWithResponse(String SessionID, String Method, String[] parameters, String jsonObject) {
+        super(SessionID, Method, parameters, jsonObject);
+        returnedData = new ArrayBlockingQueue<>(1);
+    }
+    
     public MessageWithResponse(String SessionID, String Method, String[] parameters) {
         super(SessionID, Method, parameters);
         returnedData = new ArrayBlockingQueue<>(1);
@@ -25,6 +30,8 @@ public class MessageWithResponse extends Message{
         super(SessionID, Method);
         returnedData = new ArrayBlockingQueue<>(1);
     }
+    
+    
     
     public String getReturnData()
             throws InterruptedException

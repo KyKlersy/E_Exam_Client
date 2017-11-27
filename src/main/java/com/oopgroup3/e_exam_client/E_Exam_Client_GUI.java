@@ -5,14 +5,9 @@
  */
 package com.oopgroup3.e_exam_client;
 
-import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestion;
+
 import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
-import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionFormControl;
-import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionTrueFalseControl;
-import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestionMultipleChoiceFormControl;
-import com.oopgroup3.e_exam_client.Interfaces.BuildPanelInterface;
 import java.awt.CardLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,7 +16,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -48,7 +42,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         cardlayout_container.add(examEdit_panel, "editExam");
         
         cardLayoutManager.show(cardlayout_container, "login");
-         
+        setTitle("E-Exam");
         pack();
         
     }
@@ -115,14 +109,16 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         examCreation_panel = new javax.swing.JPanel();
         trueFalseFormAddBtn = new javax.swing.JButton();
         multipleChoiceFormAddBtn = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        examCreationBackBtn = new javax.swing.JButton();
         createExamFormBtn = new javax.swing.JButton();
         examFormBuilder_scrollPane = new javax.swing.JScrollPane();
         examFormBuilder_panel = new javax.swing.JPanel();
+        createExamNameTextField = new javax.swing.JTextField();
+        examNameLbl = new javax.swing.JLabel();
         examEdit_panel = new javax.swing.JPanel();
         trueFalseFormAddEditBtn = new javax.swing.JButton();
         multipleChoiceFormAddEditBtn = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        editReturnToTeacherPanelBtn = new javax.swing.JButton();
         editExamFormBtn = new javax.swing.JButton();
         examFormEditor_scrollPane = new javax.swing.JScrollPane();
         examFormEditor_panel = new javax.swing.JPanel();
@@ -418,7 +414,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         exam_panel.add(examScrollPane, gridBagConstraints);
@@ -444,7 +440,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         trueFalseFormAddBtn.setText("True / False Form");
         trueFalseFormAddBtn.setPreferredSize(new java.awt.Dimension(140, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.15;
@@ -453,27 +449,27 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         multipleChoiceFormAddBtn.setText("Multiple Choice Form");
         multipleChoiceFormAddBtn.setPreferredSize(new java.awt.Dimension(140, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.weightx = 0.15;
         examCreation_panel.add(multipleChoiceFormAddBtn, gridBagConstraints);
 
-        jButton3.setText("Back To Teach Panel");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        examCreationBackBtn.setText("Back To Teach Panel");
+        examCreationBackBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                examCreationBackBtnActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
-        examCreation_panel.add(jButton3, gridBagConstraints);
+        examCreation_panel.add(examCreationBackBtn, gridBagConstraints);
 
         createExamFormBtn.setText("Create Exam");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         examCreation_panel.add(createExamFormBtn, gridBagConstraints);
@@ -487,12 +483,27 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.85;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         examCreation_panel.add(examFormBuilder_scrollPane, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        examCreation_panel.add(createExamNameTextField, gridBagConstraints);
+
+        examNameLbl.setText("Exam Name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
+        examCreation_panel.add(examNameLbl, gridBagConstraints);
 
         cardlayout_container.add(examCreation_panel, "card7");
 
@@ -527,16 +538,16 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.15;
         examEdit_panel.add(multipleChoiceFormAddEditBtn, gridBagConstraints);
 
-        jButton4.setText("Back To Teach Panel");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        editReturnToTeacherPanelBtn.setText("Back To Teacher Panel");
+        editReturnToTeacherPanelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                editReturnToTeacherPanelBtnActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        examEdit_panel.add(jButton4, gridBagConstraints);
+        examEdit_panel.add(editReturnToTeacherPanelBtn, gridBagConstraints);
 
         editExamFormBtn.setText("Update Exam");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -602,9 +613,9 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         cardLayoutManager.show(cardlayout_container, cardName);
     }
     
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void examCreationBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_examCreationBackBtnActionPerformed
         cardLayoutManager.show(cardlayout_container, "teacher");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_examCreationBackBtnActionPerformed
 
     private void trueFalseFormAddEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trueFalseFormAddEditBtnActionPerformed
         // TODO add your handling code here:
@@ -614,9 +625,9 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_multipleChoiceFormAddEditBtnActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void editReturnToTeacherPanelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editReturnToTeacherPanelBtnActionPerformed
         cardLayoutManager.show(cardlayout_container, "teacher");
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_editReturnToTeacherPanelBtnActionPerformed
 
     public JButton getCreateExamFormBtn() {
         return createExamFormBtn;
@@ -706,7 +717,32 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     public JButton getTrueFalseFormAddBtn() {
         return trueFalseFormAddBtn;
     }
+
+    public JButton getStudentTakeExamBtn() {
+        return studentTakeExamBtn;
+    }
+
+    public JTextField getCreateExamNameTextField() {
+        return createExamNameTextField;
+    }
+
+    public JButton getEditReturnToTeacherPanelBtn() {
+        return editReturnToTeacherPanelBtn;
+    }
+
+    public JButton getMultipleChoiceFormAddEditBtn() {
+        return multipleChoiceFormAddEditBtn;
+    }
+
+    public JButton getTrueFalseFormAddEditBtn() {
+        return trueFalseFormAddEditBtn;
+    }
+
+    public JButton getExamCreationBackBtn() {
+        return examCreationBackBtn;
+    }
      
+    
     
      
     /**
@@ -801,10 +837,13 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JPanel cardlayout_container;
     private javax.swing.JButton createExamBtn;
     private javax.swing.JButton createExamFormBtn;
+    private javax.swing.JTextField createExamNameTextField;
     private javax.swing.JButton deleteExamBtn;
     private javax.swing.JButton editExamBtn;
     private javax.swing.JButton editExamFormBtn;
+    private javax.swing.JButton editReturnToTeacherPanelBtn;
     private javax.swing.JButton examBackToLogin;
+    private javax.swing.JButton examCreationBackBtn;
     private javax.swing.JPanel examCreation_panel;
     private javax.swing.JPanel examEdit_panel;
     private javax.swing.JPanel examFormBuilder_panel;
@@ -812,13 +851,12 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JPanel examFormContainer;
     private javax.swing.JPanel examFormEditor_panel;
     private javax.swing.JScrollPane examFormEditor_scrollPane;
+    private javax.swing.JLabel examNameLbl;
     private javax.swing.JScrollPane examScrollPane;
     private javax.swing.JPanel exam_panel;
     private javax.swing.JButton gotoRegisterPanel;
     private javax.swing.JButton gotoStudentPanel;
     private javax.swing.JButton gotoTeacherPanel;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton login_btn;

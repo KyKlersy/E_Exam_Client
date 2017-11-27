@@ -66,7 +66,7 @@ public class ExamFormCreationManager
         return rootPanel;
     }
 
-    public void addExamQuestion(ExamQuestionFormControl examQuestionForm, ExamQuestion examQuestion, boolean editable, E_Exam_Client_GUI GUI)
+    public void addExamQuestion(ExamQuestionFormControl examQuestionForm, ExamQuestion examQuestion, boolean editable)
     {        
         try {
         if(rootPanel != null)
@@ -79,6 +79,32 @@ public class ExamFormCreationManager
             if(editable)
             {
                 newFormPAnel = bpi.buildEditableExamPanel(examQuestion);
+                
+                JButton removeButton = examQuestionForm.removeFormBtn();
+                removeButtonHashMap.put(removeButton.getName(), newFormPAnel);
+                removeButton.addActionListener(new ActionListener() 
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try 
+                                {
+                                    removeFormControl((JButton)ae.getSource());
+                                    rootPanel.validate();
+                                } catch (Exception e) 
+                                {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });  
+
+                        rootPanel.repaint();
+                    }     
+                });
             }
             else
             {
@@ -87,53 +113,21 @@ public class ExamFormCreationManager
             
             examHashMap.put(newFormPAnel.getName(), examQuestionForm);
             
-            JButton removeButton = examQuestionForm.removeFormBtn();
-            removeButtonHashMap.put(removeButton.getName(), newFormPAnel);
-            removeButton.addActionListener(new ActionListener() 
-            {
-                @Override
-                public void actionPerformed(ActionEvent ae) 
-                {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try 
-                            {
-                                removeFormControl((JButton)ae.getSource());
-                                rootPanel.validate();
-                            } catch (Exception e) 
-                            {
-                                e.printStackTrace();
-                            }
-                                
-                        }
-                    });  
-                    
-                    rootPanel.repaint();
-                }     
-            });
-            
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
-                public void run() {
-                    /*
-                    GridBagConstraints gbc = new GridBagConstraints();
-                    gbc.gridy = atomicIntegerGridY.get();
-                    gbc.weightx = 1.0;
-                    gbc.weighty = 1.0;
-                    gbc.fill = GridBagConstraints.BOTH;
-                    rootPanel.add(newFormPAnel, gbc);*/
+                public void run() 
+                {
                     rootPanel.add(newFormPAnel, new BorderLayout(0, 4));
-                    rootPanel.revalidate();
-                    //GUI.pack();
-                    
+                    rootPanel.revalidate();     
+                    rootPanel.repaint();
                 }
             });
                    
         }
-        } catch (Exception e) {
+        } catch (Exception e) 
+        {
                 e.printStackTrace();
-            }
+        }
     }
     
     public ExamQuestionFormControl getExamQuestionFormControl(String panelName)
@@ -168,6 +162,11 @@ public class ExamFormCreationManager
         }
     }
        
+    public void resetAtomicInts()
+    {
+        atomicIntegerQuestionNumber.getAndSet(0);
+        atomicIntegerGridY.getAndSet(0);
+    }
     
     
     public void debugPrintKeys()

@@ -26,6 +26,7 @@ import javax.swing.SwingWorker;
  * @author tri.le
  */
 public class ClientRegisterThread extends SwingWorker<String, Object>{
+    private E_Exam_Client_GUI GUI;
     private final JTextField username;
     private final JPasswordField password;
     private final JPasswordField confirmPassword;
@@ -38,6 +39,7 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
 
     public ClientRegisterThread(E_Exam_Client_GUI GUI, ResponseSharedData responseSharedData)
     {
+        this.GUI = GUI;
         this.username = GUI.getRegisterUsername_txtField();
         this.password = GUI.getRegisterPassword_txtField();
         this.confirmPassword = GUI.getRegisterPasswordConfirm_txtField();
@@ -121,15 +123,8 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
     @Override
     protected void done()
     {
-        try
-        {
-            
-            System.out.println(get());
-            
-        }
-        catch (Exception ignore)
-        {
-            
-        }
+        GUI.getRegisterUsername_txtField().setText("");
+        GUI.getRegisterPassword_txtField().setText("");
+        GUI.getRegisterPasswordConfirm_txtField().setText("");
     }
 }

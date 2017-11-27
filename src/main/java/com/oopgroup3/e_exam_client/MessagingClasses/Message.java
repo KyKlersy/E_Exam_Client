@@ -19,6 +19,7 @@ public class Message {
     private String SessionID;
     private String Method;
     private String[] parameters;
+    private String jsonObject;
 
     public Message(String SessionID, String Method)
     {
@@ -30,6 +31,14 @@ public class Message {
         this.SessionID = SessionID;
         this.Method = Method;
         this.parameters = parameters;
+    }
+    
+    public Message(String SessionID, String Method, String[] parameters, String jsonObject)
+    {
+        this.SessionID = SessionID;
+        this.Method = Method;
+        this.parameters = parameters;
+        this.jsonObject = jsonObject;
     }
 
     public String getSessionID() {
@@ -54,6 +63,14 @@ public class Message {
 
     public void setParameters(String[] parameters) {
         this.parameters = parameters;
+    }
+
+    public String getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(String jsonObject) {
+        this.jsonObject = jsonObject;
     }
     
     
