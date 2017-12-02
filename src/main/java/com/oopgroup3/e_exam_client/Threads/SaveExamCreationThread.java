@@ -123,6 +123,7 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
                 the users session info, the method to call on the server
                 and the inner json packed string.
             */            
+  
             messageWithResponse = new MessageWithResponse(user.getSessionID(), MethodCall, parameters, jsonObject);
             //This type of message also has a blocking method to wait for the response, to use this feature
             //response shared data is the blocking implementation that allows data to be recieved from
@@ -133,6 +134,7 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
             try 
             {
                 Socket sendSocket = new Socket("127.0.0.1",64023);    
+
                 messageWithResponse.send(sendSocket);
                 
             } 
