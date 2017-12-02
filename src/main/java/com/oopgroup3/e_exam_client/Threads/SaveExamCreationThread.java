@@ -84,13 +84,13 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
             parameters[0] = Integer.toString(user.getUserID());
             parameters[1] = exam.getGUI().getCreateExamNameTextField().getText();
             
-            //Message message = new Message(user.getSessionID(), MethodCall, parameters, jsonObject);
+            
             messageWithResponse = new MessageWithResponse(user.getSessionID(), MethodCall, parameters, jsonObject);
             responseSharedData.produce(messageWithResponse);
             try 
             {
                 Socket sendSocket = new Socket("127.0.0.1",64023);    
-                //message.send(sendSocket);
+
                 messageWithResponse.send(sendSocket);
                 
             } 

@@ -23,7 +23,8 @@ public abstract class ExamQuestionFormControl extends JPanel
 
     public ExamQuestionFormControl(){}
     
-    public ExamQuestionFormControl(int QuestionNumber, int QuestionType) {
+    public ExamQuestionFormControl(int QuestionNumber, int QuestionType) 
+    {
         this.QuestionNumber = QuestionNumber;
         this.QuestionType = QuestionType;
     }
