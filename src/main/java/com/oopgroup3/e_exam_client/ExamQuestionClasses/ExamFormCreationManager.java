@@ -1,11 +1,10 @@
 package com.oopgroup3.e_exam_client.ExamQuestionClasses;
 
-import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
+
 import com.oopgroup3.e_exam_client.Interfaces.BuildPanelInterface;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -75,13 +74,13 @@ public class ExamFormCreationManager
             atomicIntegerGridY.getAndIncrement();
             examQuestionForm.setFormQuestionNumber(atomicIntegerQuestionNumber);
             BuildPanelInterface bpi = examQuestionForm;
-            JPanel newFormPAnel;
+            JPanel newFormPanel;
             if(editable)
             {
-                newFormPAnel = bpi.buildEditableExamPanel(examQuestion);
+                newFormPanel = bpi.buildEditableExamPanel(examQuestion);
                 
                 JButton removeButton = examQuestionForm.removeFormBtn();
-                removeButtonHashMap.put(removeButton.getName(), newFormPAnel);
+                removeButtonHashMap.put(removeButton.getName(), newFormPanel);
                 removeButton.addActionListener(new ActionListener() 
                 {
                     @Override
@@ -108,16 +107,16 @@ public class ExamFormCreationManager
             }
             else
             {
-                newFormPAnel = bpi.buildExamPanel(examQuestion);
+                newFormPanel = bpi.buildExamPanel(examQuestion);
             }
             
-            examHashMap.put(newFormPAnel.getName(), examQuestionForm);
+            examHashMap.put(newFormPanel.getName(), examQuestionForm);
             
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() 
                 {
-                    rootPanel.add(newFormPAnel, new BorderLayout(0, 4));
+                    rootPanel.add(newFormPanel, new BorderLayout(0, 4));
                     rootPanel.revalidate();     
                     rootPanel.repaint();
                 }
