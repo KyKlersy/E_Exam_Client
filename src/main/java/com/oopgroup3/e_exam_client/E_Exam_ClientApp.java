@@ -14,6 +14,7 @@ import com.oopgroup3.e_exam_client.Threads.ClientLoginThread;
 import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ClientServerResponseThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
+import com.oopgroup3.e_exam_client.Threads.DeleteExamThread;
 import com.oopgroup3.e_exam_client.Threads.LoadExamThread;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -180,6 +181,24 @@ public class E_Exam_ClientApp
                         }
                     }
                 });
+                
+                
+                /*******************************************************************
+                * Teacher control panel button event for deleting a created exam     *
+                * into the database on the server.                                 *
+                ********************************************************************/
+                JButton deleteExamBtn = GUI.getDeleteExamBtn();
+                deleteExamBtn.addActionListener(new ActionListener() 
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        EXECUTOR.execute(new DeleteExamThread(Exam, responseSharedData));
+                    }
+                });
+                
+                
+                
                 
                 JButton addTrueFalseForm = GUI.getTrueFalseFormAddBtn();
                 addTrueFalseForm.addActionListener(new ActionListener() {

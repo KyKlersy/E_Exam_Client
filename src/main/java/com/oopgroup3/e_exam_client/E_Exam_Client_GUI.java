@@ -47,9 +47,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         
     }
 
-    public JLabel getRegister_incorrectPass_label() {
-        return register_incorrectPass_label;
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -633,6 +631,13 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         return createExamFormBtn;
     }
 
+    public JButton getDeleteExamBtn() {
+        return deleteExamBtn;
+    }
+
+    public JLabel getRegister_incorrectPass_label() {
+        return register_incorrectPass_label;
+    }
     
     public JButton getCreateExamBtn() {
         return createExamBtn;
