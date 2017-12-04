@@ -385,7 +385,28 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                /*Handle your thread here for loading exams.*/
+                JButton viewGradesButton = GUI.getViewGradesBtn();
+                viewGradesButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        //Execute thread here to retrive list
+                        // in the swing worker done once the list has been updated
+                        // Call
+                         GUI.switchCardView("studentGrades");
+                    }
+                });
 
+                JButton cancelViewGradesbButton = GUI.getCancelGradesBtn();
+                cancelViewGradesbButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        GUI.switchCardView("student");
+                    }
+                });
+                
+                
                 
             };   
         });              
