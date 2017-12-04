@@ -15,7 +15,9 @@ import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ClientServerResponseThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import com.oopgroup3.e_exam_client.Threads.DeleteExamThread;
+import com.oopgroup3.e_exam_client.Threads.SaveKeyExamThread;
 import com.oopgroup3.e_exam_client.Threads.LoadExamThread;
+import com.oopgroup3.e_exam_client.Threads.UserAssignedExamsListUpdater;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -25,7 +27,6 @@ import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
-import javax.swing.JList;
 
 /**
  *
@@ -110,6 +111,16 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                JButton newUserButton = GUI.getNewUserRegisterBtn();
+                newUserButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) 
+                    {
+                        GUI.getRegister_incorrectPass_label().setVisible(false);
+                        GUI.switchCardView("register");
+                    }
+                });
+
                 /* Register Panel button event for handling registration of new user */
                 JButton registerButton = GUI.getRegister_btn();
                 registerButton.addActionListener(new ActionListener()
@@ -193,11 +204,27 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) 
                     {
-                        EXECUTOR.execute(new DeleteExamThread(Exam, responseSharedData));
+                        EXECUTOR.execute(new DeleteExamThread(GUI,Exam, responseSharedData));
                     }
                 });
                 
                 
+                JButton assignExamButton = GUI.getAssignExamButton();
+                assignExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        GUI.switchCardView("assignExam");
+                    }
+                });
+                
+                JButton assignStudentExamBtn = GUI.getAssignStudentExamBtn();
+                assignStudentExamBtn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        EXECUTOR.execute(new UserAssignedExamsListUpdater(Exam, responseSharedData));
+                    }
+                });
                 
                 
                 JButton addTrueFalseForm = GUI.getTrueFalseFormAddBtn();
@@ -288,6 +315,50 @@ public class E_Exam_ClientApp
                         GUI.switchCardView("teacher");
                     }
                 });
+                
+                JButton keyExamButton = GUI.getKeyExamBtn();
+                keyExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().setRootPanel(GUI.getExamFormKey_panel());
+                        print("Selected Exam ID: " + Exam.getSelectedExamID());
+                        if(Exam.getSelectedExamID() > -1)
+                        {
+                            try 
+                            {
+                                EXECUTOR.execute(new LoadExamThread(Exam.getSelectedExamID(), false, responseSharedData));
+                                GUI.switchCardView("keyExam");
+                            } catch (Exception e) 
+                            {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        
+                    }
+                });
+                
+                JButton submitKeyExamButton = GUI.getSubmitKeyBtn();
+                submitKeyExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        EXECUTOR.execute(new SaveKeyExamThread(GUI, Exam, responseSharedData));
+                    }
+                });
+                    
+                
+                JButton cancelKeyExamButton = GUI.getCancelKeyBtn();
+                cancelKeyExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().resetAtomicInts();
+                        GUI.switchCardView("teacher");
+                    }
+                });
+                
 
                 /*
                     Student Panel Controls
@@ -305,24 +376,17 @@ public class E_Exam_ClientApp
                     }
                 });
                 
-                
-                /*************************************************************** 
-                * Teacher control panel button event for saving an edited exam *
-                * into the database on the server.                             *  
-                ****************************************************************/
-                
-                
-                
+                JButton submitStudentExamButton = GUI.getSubmitStudentExam();
+                submitStudentExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        print("Selected Exam ID submitting Exam button: " + Exam.getSelectedExamID());
+                        EXECUTOR.execute(new SaveKeyExamThread(GUI, Exam, responseSharedData));
+                    }
+                });
                 
 
-
-
                 
-                
-                
-                /****************************************
-                 * End of button handler binding block  *
-                 ****************************************/ 
             };   
         });              
     }  

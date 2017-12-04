@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
+import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 
 
 /**
@@ -48,9 +49,11 @@ public class ClientServerResponseThread implements Runnable{
                 try 
                 {
                     messageWithResponse = responseSharedData.consume();
+                    print("Consumed message to handle: ");
                 } 
                 catch (InterruptedException ie)
                 {
+                    ie.printStackTrace();
                     Thread.interrupted();
                 }
                 
@@ -73,8 +76,7 @@ public class ClientServerResponseThread implements Runnable{
         } 
         catch (IOException ex)
         {
-
-            
+            ex.printStackTrace();          
         }
     }
 }

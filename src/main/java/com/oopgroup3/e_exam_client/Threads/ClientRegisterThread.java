@@ -10,6 +10,7 @@ import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.google.gson.Gson;
 import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
 import com.oopgroup3.e_exam_client.User;
+import com.oopgroup3.e_exam_client.UserData;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 import java.awt.CardLayout;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
@@ -33,7 +35,7 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
     private final CardLayout cardLayoutManager;
     private final JPanel cardContainer;
     private final JComboBox<String> comboBox;
-    private User returnedUser;
+    private UserData returnedUser;
     private User user;
     private ResponseSharedData responseSharedData;
 
@@ -52,6 +54,10 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
     @Override
     protected String doInBackground() 
     {
+        SwingUtilities.invokeLater(() -> {
+            GUI.getRegister_btn().setEnabled(false);
+        });
+        
         MessageWithResponse responseMessage;
         String methodName = "Register";
         String SessionID = "";
@@ -96,7 +102,7 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         if(!msg.equals("Failed"))
         {
             Gson gson = new Gson();
-            returnedUser = gson.fromJson(msg, User.class);
+            returnedUser = gson.fromJson(msg, UserData.class);
             user = User.getUserInstance();
             user.setSessionID(returnedUser.getSessionID());
             user.setUserID(returnedUser.getUserID());
@@ -126,5 +132,6 @@ public class ClientRegisterThread extends SwingWorker<String, Object>{
         GUI.getRegisterUsername_txtField().setText("");
         GUI.getRegisterPassword_txtField().setText("");
         GUI.getRegisterPasswordConfirm_txtField().setText("");
+        GUI.getRegister_btn().setEnabled(true);
     }
 }

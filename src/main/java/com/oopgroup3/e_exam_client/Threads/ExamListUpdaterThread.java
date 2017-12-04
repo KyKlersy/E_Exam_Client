@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.oopgroup3.e_exam_client.MessagingClasses.AbstractListResponse;
 import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.oopgroup3.e_exam_client.ExamListData;
+import com.oopgroup3.e_exam_client.MessagingClasses.AbstractListDecoder;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import com.oopgroup3.e_exam_client.User;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
     private DefaultListModel defaultListModel;
     private User user = User.getUserInstance();
     private MessageWithResponse responseMessage;
+    private AbstractListDecoder abstractListDecoder;
 
     public ExamListUpdaterThread(ResponseSharedData responseSharedData, ArrayList<String> examNameList, ArrayList<Integer> examIDList, DefaultListModel defaultListModel)
     {
@@ -34,6 +36,7 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
         this.examNameList = examNameList;
         this.examIDList = examIDList;
         this.defaultListModel = defaultListModel;
+        abstractListDecoder = new AbstractListDecoder();
     }
 
     @Override
@@ -72,7 +75,7 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
         print("Json Returned meg: " + msg);
         
         TypeToken<AbstractListResponse<ExamListData>> typeToken = new TypeToken<AbstractListResponse<ExamListData>>(){};
-        AbstractListResponse<ExamListData> responseClass = parseAbstractListResponse(msg, typeToken);
+        AbstractListResponse<ExamListData> responseClass = abstractListDecoder.parseAbstractListResponse(msg, typeToken);
                     
         System.out.println("Size of list: " + responseClass.getList().size());
         
@@ -95,18 +98,6 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
             print("List item: " + examName);
             defaultListModel.addElement(examName);
         });
-        
-        
-        
-        
-    }
-    
-    
-    public <T> AbstractListResponse<T> parseAbstractListResponse(String jsonString, TypeToken typeToken)
-    {
-        return new GsonBuilder()
-                .create()
-                .fromJson(jsonString, typeToken.getType());
     }
     
 }
