@@ -42,6 +42,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         cardlayout_container.add(examEdit_panel, "editExam");
         cardlayout_container.add(keyExam_panel, "keyExam");
         cardlayout_container.add(teacherAssignExams_panel, "assignExam");
+        cardlayout_container.add(studentGrade_panel, "studentGrades");
         
         cardLayoutManager.show(cardlayout_container, "login");
         setTitle("E-Exam");
@@ -89,6 +90,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         welcomeLbl = new javax.swing.JLabel();
         usernameLbl = new javax.swing.JLabel();
         studentTakeExamBtn = new javax.swing.JButton();
+        viewGradesBtn = new javax.swing.JButton();
         teacher_panel = new javax.swing.JPanel();
         teacherBackToLogin = new javax.swing.JButton();
         createExamBtn = new javax.swing.JButton();
@@ -120,6 +122,9 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         examFormEditor_scrollPane = new javax.swing.JScrollPane();
         examFormEditor_panel = new javax.swing.JPanel();
         studentGrade_panel = new javax.swing.JPanel();
+        examGrade_scrollpane = new javax.swing.JScrollPane();
+        examGradeJList = new javax.swing.JList<>();
+        cancelGradesBtn = new javax.swing.JButton();
         keyExam_panel = new javax.swing.JPanel();
         examFormKey_scrollPane = new javax.swing.JScrollPane();
         examFormKey_panel = new javax.swing.JPanel();
@@ -286,6 +291,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.25;
         gridBagConstraints.weighty = 0.25;
@@ -306,8 +312,14 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         studentTakeExamBtn.setText("Take Exam");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         student_panel.add(studentTakeExamBtn, gridBagConstraints);
+
+        viewGradesBtn.setText("View Grades");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        student_panel.add(viewGradesBtn, gridBagConstraints);
 
         cardlayout_container.add(student_panel, "card4");
 
@@ -545,6 +557,22 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         cardlayout_container.add(examEdit_panel, "card7");
 
         studentGrade_panel.setLayout(new java.awt.GridBagLayout());
+
+        examGradeJList.setModel(new DefaultListModel<String>());
+        examGrade_scrollpane.setViewportView(examGradeJList);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        studentGrade_panel.add(examGrade_scrollpane, gridBagConstraints);
+
+        cancelGradesBtn.setText("Go Back");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        studentGrade_panel.add(cancelGradesBtn, gridBagConstraints);
+
         cardlayout_container.add(studentGrade_panel, "card9");
 
         keyExam_panel.setLayout(new java.awt.GridBagLayout());
@@ -805,6 +833,22 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     public JButton getAssignExamButton() {
         return assignExamButton;
     }
+
+    public JButton getStudentBackToLogin() {
+        return studentBackToLogin;
+    }
+
+    public JButton getViewGradesBtn() {
+        return viewGradesBtn;
+    }
+
+    public JList<String> getExamGradeJList() {
+        return examGradeJList;
+    }
+
+    public JButton getCancelGradesBtn() {
+        return cancelGradesBtn;
+    }
      
     
     
@@ -884,6 +928,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JList<String> availableStudentExams;
     private javax.swing.JList<String> availableTeacherExams;
     private javax.swing.JButton cancelAssignExamBtn;
+    private javax.swing.JButton cancelGradesBtn;
     private javax.swing.JButton cancelKeyBtn;
     private javax.swing.JButton cancelStudentExam;
     private javax.swing.JButton cancel_login_btn;
@@ -905,6 +950,8 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane examFormEditor_scrollPane;
     private javax.swing.JPanel examFormKey_panel;
     private javax.swing.JScrollPane examFormKey_scrollPane;
+    private javax.swing.JList<String> examGradeJList;
+    private javax.swing.JScrollPane examGrade_scrollpane;
     private javax.swing.JLabel examNameLbl;
     private javax.swing.JScrollPane examScrollPane;
     private javax.swing.JPanel exam_panel;
@@ -946,6 +993,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private javax.swing.JLabel usernameLbl;
     private javax.swing.JLabel username_lbl;
     private javax.swing.JTextField username_txtField;
+    private javax.swing.JButton viewGradesBtn;
     private javax.swing.JLabel welcomeLbl;
     // End of variables declaration//GEN-END:variables
 }
