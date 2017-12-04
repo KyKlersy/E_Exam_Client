@@ -8,11 +8,8 @@ package com.oopgroup3.e_exam_client;
 public class User 
 {
     private static User userInstance;
-    private String sessionID;
-    private int userType;
-    private int userID;
-    private String userFirstName;
-
+    private final UserData userData = new UserData();
+    
     private User(){}
     
     public static synchronized User getUserInstance()
@@ -26,40 +23,40 @@ public class User
     }
 
     public String getSessionID() {
-        return sessionID;
+        return userData.getSessionID();
     }
 
     public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
+        userData.setSessionID(sessionID);
     }
 
     public int getUserType() {
-        return userType;
+        return userData.getUserType();
     }
 
     public void setUserType(int userType) {
-        this.userType = userType;
+        userData.setUserType(userType);
     }
 
     public int getUserID() {
-        return userID;
+        return userData.getUserID();
     }
 
     public void setUserID(int userID) {
-        this.userID = userID;
+        userData.setUserID(userID);
     }
 
     public String getUserFirstName() {
-        return userFirstName;
+        return userData.getUserFirstName();
     }
 
     public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
+        userData.setUserFirstName(userFirstName);
     }
     
     public boolean isAuthenticated()
     {
-        if(sessionID.equals(""))
+        if(userData.getSessionID().equals(""))
         {
             return false;             
         }

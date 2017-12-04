@@ -47,6 +47,7 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
     private User user;
     private String MethodCall;
     private E_Exam exam;
+    private int examID = -1;
     private ResponseSharedData responseSharedData;
     private Component[] components;
     private ArrayList<ExamQuestion> examQuestions;
@@ -65,7 +66,14 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
         */
         components = efcm.getRootPanel().getComponents();
         examQuestions = new ArrayList<>();
+                
+        if(MethodCall.equals("EditExam"))
+        {
+            examID = exam.getSelectedExamID();
+        }
     }
+
+    
     
     @Override
     protected Void doInBackground() throws Exception {
@@ -114,9 +122,10 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
             jsonObject = gson.toJson(abstractListResponse,type);
             
             //Message parameters user id and exam name from exam name textbox
-            String[] parameters = new String[2];
+            String[] parameters = new String[3];
             parameters[0] = Integer.toString(user.getUserID());
-            parameters[1] = exam.getGUI().getCreateExamNameTextField().getText();
+            parameters[1] = Integer.toString(examID);
+            parameters[2] = exam.getGUI().getCreateExamNameTextField().getText();
             
             /*
                 This is a double packed json message, the outer message houses 
@@ -174,7 +183,10 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
         //Which will refetch the data and update the list.
         if(msg.equals("Success"))
         {
+            efcm.resetAtomicInts();
+            efcm.getRootPanel().removeAll();
             exam.getExamList().updateList();
+            
         }
         
         return null;

@@ -4,8 +4,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Enumeration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -15,7 +17,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -72,6 +73,7 @@ public class ExamQuestionTrueFalseControl extends ExamQuestionFormControl
         if(examQuestion != null)
         {
             questionOne.setText(examQuestion.getQuestion());
+            setExamQuestionID(examQuestion.getExamQuestionID());
             
         }
         else
@@ -128,6 +130,32 @@ public class ExamQuestionTrueFalseControl extends ExamQuestionFormControl
         return panel;
     }
 
+    private int getSelectedButtonVal(ButtonGroup buttonGroup) 
+    {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) 
+        {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                
+                String buttonTxt =  button.getText();
+                
+                switch(buttonTxt)
+                {
+                    case "True":
+                        return 1;
+                    case "False":
+                        return 2;
+                    default:
+                        return -1;
+                    
+                }
+            }
+        }
+        return -1;
+    }
+    
+    
     @Override
     public void updateQuestionNumber() {
 
@@ -149,7 +177,7 @@ public class ExamQuestionTrueFalseControl extends ExamQuestionFormControl
     @Override
     public ExamQuestion saveForm() 
     {  
-        return new ExamQuestion(getQuestionNumber(), 1, questionOne.getText(), "", "", "", "");
+        return new ExamQuestion(getExamQuestionID(),getQuestionNumber(), 1, questionOne.getText(), "", "", "", "");
     }
 
     @Override
@@ -161,6 +189,12 @@ public class ExamQuestionTrueFalseControl extends ExamQuestionFormControl
     public void setFormQuestionNumber(AtomicInteger atomicInteger) {
         super.setQuestionNumber(atomicInteger.get());
         questionNumLabel.setText("Question #" + Integer.toString(atomicInteger.get()));
+    }
+
+    @Override
+    public ExamAnswer saveAnswer() {
+        int answerChoice = getSelectedButtonVal(buttonGroup);
+        return new ExamAnswer(getExamQuestionID(), getQuestionNumber(), 1, answerChoice);
     }
 
 }

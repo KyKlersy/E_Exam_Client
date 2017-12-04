@@ -6,6 +6,7 @@
 package com.oopgroup3.e_exam_client.Threads;
 
 import com.oopgroup3.e_exam_client.E_Exam;
+import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
 import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import com.oopgroup3.e_exam_client.User;
@@ -13,9 +14,7 @@ import static com.oopgroup3.e_exam_client.Utils.printDebug.print;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
@@ -23,12 +22,14 @@ import javax.swing.SwingWorker;
  * @author tri.le
  */
 public class DeleteExamThread extends SwingWorker<String, Object>{
+    private E_Exam_Client_GUI GUI;
     private ResponseSharedData responseSharedData;
     private E_Exam exam;
     private User user;
     private MessageWithResponse messageWithResponse;
     
-    public DeleteExamThread(E_Exam exam, ResponseSharedData responseSharedData) {
+    public DeleteExamThread(E_Exam_Client_GUI GUI,E_Exam exam, ResponseSharedData responseSharedData) {
+        this.GUI = GUI;
         this.exam = exam;
         this.responseSharedData = responseSharedData;
         user = User.getUserInstance();
@@ -36,6 +37,12 @@ public class DeleteExamThread extends SwingWorker<String, Object>{
 
     @Override
     protected String doInBackground() throws Exception {
+        
+        SwingUtilities.invokeLater(() -> {
+            GUI.getDeleteExamBtn().setEnabled(false);
+        });
+        
+        
         String methodName = "DeleteExam";
         String SessionID = "";
         String[] params = new String[2];
@@ -88,6 +95,9 @@ public class DeleteExamThread extends SwingWorker<String, Object>{
     @Override
     public void done()
     {
+        
+        GUI.getDeleteExamBtn().setEnabled(true);
+        
         
     }
     

@@ -33,6 +33,7 @@ public class LoadExamThread extends SwingWorker<String, Object>
     
     public LoadExamThread(int examID, boolean editable, ResponseSharedData responseSharedData) {
         this.examID = examID;
+        this.editable = editable;
         this.responseSharedData = responseSharedData;
         this.user = User.getUserInstance();
     }
@@ -41,7 +42,9 @@ public class LoadExamThread extends SwingWorker<String, Object>
     @Override
     protected String doInBackground() throws Exception 
     {
-        
+        try {
+            
+
         String methodName = "GetExam";
         String SessionID = "";
         String[] params = new String[2];
@@ -98,21 +101,29 @@ public class LoadExamThread extends SwingWorker<String, Object>
                 }
                 else if(user.getUserType() == 2 )
                 {
-                    print("Loading editable exam");
-                    examLoader.loadEditableExam();
+                    if(editable)
+                    {   
+                        print("Loading editable exam");
+                        examLoader.loadEditableExam();
+                    }
+                    else
+                    {
+                        print("Loading uneditable exam");
+                        examLoader.loadExam();
+                    }
+                        
 
                 }
-               /* else if(user.getUserType() == 2 && !editable)
-                {
-                    examLoader.loadExam();
-                }*/
+                
             } catch (Exception e) 
             {
                 e.printStackTrace();
             }
 
         }
-              
+                      } catch (Exception e) {
+                          e.printStackTrace();
+        }
         return null;
     }
     

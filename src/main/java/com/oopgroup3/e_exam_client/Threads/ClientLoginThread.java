@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.oopgroup3.e_exam_client.E_Exam;
 import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
 import com.oopgroup3.e_exam_client.User;
+import com.oopgroup3.e_exam_client.UserData;
 import com.oopgroup3.e_exam_client.UserType;
 import java.awt.CardLayout;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -32,7 +34,7 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
     private final JPasswordField password;
     private final CardLayout cardLayoutManager;
     private final JPanel cardContainer;
-    private User returnedUser;
+    private UserData returnedUser;
     private User user;
     private ResponseSharedData responseSharedData;
     private final ExecutorService EXECUTOR;
@@ -54,6 +56,10 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
     @Override
     protected String doInBackground() 
     {
+        SwingUtilities.invokeLater(() -> {
+            GUI.getLoginButton().setEnabled(false);
+        });
+        
         MessageWithResponse responseMessage;
         String methodName = "Login";
         String SessionID = "";
@@ -97,7 +103,7 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
         if(!msg.equals("Failed"))
         {
             Gson gson = new Gson();
-            returnedUser = gson.fromJson(msg, User.class);
+            returnedUser = gson.fromJson(msg, UserData.class);
             user = User.getUserInstance();
             user.setSessionID(returnedUser.getSessionID());
             user.setUserID(returnedUser.getUserID());
@@ -168,10 +174,12 @@ public class ClientLoginThread extends SwingWorker<String, Object>{
             
             
         }
-        catch (Exception ignore)
+        catch (Exception e)
         {
-            
+            e.printStackTrace();
         }
+        
+        GUI.getLoginButton().setEnabled(true);
     }
     
 }

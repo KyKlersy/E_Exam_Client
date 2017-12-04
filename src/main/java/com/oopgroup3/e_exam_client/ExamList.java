@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.ListModel;
 
 /**
  *

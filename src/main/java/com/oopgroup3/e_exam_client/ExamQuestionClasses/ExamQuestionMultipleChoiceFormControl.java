@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Enumeration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -89,7 +91,7 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
         if(examQuestion != null)
         {
             
-            
+            super.setExamQuestionID(examQuestion.getExamQuestionID());
             questionOne.setText(examQuestion.getQuestion());
             answerOne.setText(examQuestion.getQuestion_1());
             answerTwo.setText(examQuestion.getQuestion_2());
@@ -174,7 +176,36 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
         panel.add(radioButton, gbcRadioButton);
 
     }
+    
+    private int getSelectedButtonVal(ButtonGroup buttonGroup) 
+    {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
 
+            if (button.isSelected()) {
+                
+                String buttonTxt =  button.getText();
+                
+                switch(buttonTxt)
+                {
+                    case "A":
+                        return 1;
+                    case "B":
+                        return 2;
+                    case "C":
+                        return 3;
+                    case "D":
+                        return 4;
+                    default:
+                        return -1;
+                    
+                }
+            }
+        }
+        return -1;
+    }
+    
+    
     @Override
     public void updateQuestionNumber() {
         questionNumLabel.setText("Question #" + super.getQuestionNumber());
@@ -195,7 +226,7 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
 
     @Override
     public ExamQuestion saveForm() {
-        return new ExamQuestion(getQuestionNumber(), 2, questionOne.getText(), answerOne.getText(), answerTwo.getText(), answerThree.getText(), answerFour.getText());
+        return new ExamQuestion(getExamQuestionID(),getQuestionNumber(), 2, questionOne.getText(), answerOne.getText(), answerTwo.getText(), answerThree.getText(), answerFour.getText());
     }
 
     @Override
@@ -205,8 +236,15 @@ public final class ExamQuestionMultipleChoiceFormControl extends ExamQuestionFor
     }
     
     @Override
-    public void setFormQuestionNumber(AtomicInteger atomicInteger) {
+    public void setFormQuestionNumber(AtomicInteger atomicInteger)
+    {
         super.setQuestionNumber(atomicInteger.get());
         questionNumLabel.setText("Question #" + Integer.toString(atomicInteger.get()));
+    }
+
+    @Override
+    public ExamAnswer saveAnswer() {
+        int answerChoice = getSelectedButtonVal(buttonGroup);
+        return new ExamAnswer(getExamQuestionID(), getQuestionNumber(), 2, answerChoice);
     }
 }
