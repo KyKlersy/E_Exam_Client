@@ -51,7 +51,7 @@ public class SaveExamCreationThread extends SwingWorker<Void, Object>{
     private ResponseSharedData responseSharedData;
     private Component[] components;
     private ArrayList<ExamQuestion> examQuestions;
-    private MessageWithResponse messageWithResponse ;
+    private MessageWithResponse messageWithResponse;
     private ExamFormCreationManager efcm = ExamFormCreationManager.getInstanceExamFormCreationManager(); //Fetching singleton instance
     
     public SaveExamCreationThread(String MethodName, E_Exam exam, ResponseSharedData responseSharedData) 

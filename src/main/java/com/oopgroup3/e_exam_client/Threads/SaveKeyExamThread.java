@@ -47,6 +47,9 @@ public class SaveKeyExamThread extends SwingWorker<String, Object>{
     @Override
     protected String doInBackground() throws Exception 
     {
+        try {
+            
+
         String Method;
         String jsonObject;
         String[] params = new String[2];
@@ -116,26 +119,27 @@ public class SaveKeyExamThread extends SwingWorker<String, Object>{
         }
         
 
-        
-        if(msg.equals("Success"))
+        if(Method.equals("KeyExam"))
         {
-
-            print("User Type: " + user.getUserType());
-            if(user.getUserType() == 2)
-            {
-                GUI.switchCardView("teacher");
-            }
-            else
-            {
-                GUI.switchCardView("student");
-            }
-            
+            GUI.switchCardView("teacher");
         }
+        else
+        {
+            exam.getExamList().updateList();
+            GUI.switchCardView("student");
+        }
+            
+        
         
         selectedExamChoices.printAnswers();
         
-        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
                 
     }
+    
+    
+    
 }
