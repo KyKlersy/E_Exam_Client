@@ -6,8 +6,8 @@
 package com.oopgroup3.e_exam_client;
 
 
-import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamFormCreationManager;
 import java.awt.CardLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -326,11 +326,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         teacher_panel.setLayout(new java.awt.GridBagLayout());
 
         teacherBackToLogin.setText("Logout");
-        teacherBackToLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherBackToLoginActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -565,6 +560,8 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.8;
         studentGrade_panel.add(examGrade_scrollpane, gridBagConstraints);
 
         cancelGradesBtn.setText("Go Back");
@@ -613,11 +610,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
         teacherAssignExams_panel.setLayout(new java.awt.GridBagLayout());
 
-        assignedStudents_jlist.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        assignedStudents_jlist.setModel(new DefaultListModel<String>());
         assignedStudents_scrollpane.setViewportView(assignedStudents_jlist);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -627,7 +620,7 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         teacherAssignExams_panel.add(assignedStudents_scrollpane, gridBagConstraints);
 
-        studentsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        studentsComboBox.setModel(new DefaultComboBoxModel<String>());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -656,10 +649,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     private void studentBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentBackToLoginActionPerformed
         cardLayoutManager.show(cardlayout_container, "login");
     }//GEN-LAST:event_studentBackToLoginActionPerformed
-
-    private void teacherBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherBackToLoginActionPerformed
-        cardLayoutManager.show(cardlayout_container, "login");
-    }//GEN-LAST:event_teacherBackToLoginActionPerformed
 
     public void switchCardView(String cardName)
     {
@@ -849,11 +838,33 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
     public JButton getCancelGradesBtn() {
         return cancelGradesBtn;
     }
-     
+
+    public JList<String> getAssignedStudents_jlist() {
+        return assignedStudents_jlist;
+    }
+
+    public JComboBox<String> getStudentsComboBox() {
+        return studentsComboBox;
+    }
+
+    public JPanel getTeacherAssignExams_panel() {
+        return teacherAssignExams_panel;
+    }
+
+    public JButton getCancelAssignExamBtn() {
+        return cancelAssignExamBtn;
+    }
+
+    public JButton getTeacherBackToLogin() {
+        return teacherBackToLogin;
+    }
+
+    public JButton getCancelStudentExam() {
+        return cancelStudentExam;
+    }
     
     
-    
-     
+
     /**
      *
      * @return JPanel

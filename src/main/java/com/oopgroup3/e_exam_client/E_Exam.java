@@ -19,6 +19,7 @@ public class E_Exam
     private final ResponseSharedData responseSharedData;
     private final ExecutorService EXECUTOR;
     private ExamList examList;
+    private UserAssignedExamsList userAssignedExamsList;
     /*Add private member reference to your class for handling list below*/
     private ExamGradesList examGradesList;
 
@@ -45,6 +46,7 @@ public class E_Exam
         {
             examList = new ExamList(GUI.getAvailableTeacherExams(), responseSharedData, EXECUTOR);
             examList.updateList();
+            userAssignedExamsList = new UserAssignedExamsList(GUI.getAssignedStudents_jlist(), GUI.getStudentsComboBox(), responseSharedData, EXECUTOR, this);
         }       
     }
 
@@ -55,6 +57,11 @@ public class E_Exam
     public ExamList getExamList()
     {
         return this.examList;
+    }
+    
+    public UserAssignedExamsList getUserAssignedExamsList()
+    {
+        return this.userAssignedExamsList;
     }
     
     public E_Exam_Client_GUI getGUI()
@@ -71,10 +78,13 @@ public class E_Exam
     {
         ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
         this.examList.clear();
+        userAssignedExamsList.clearLists();
     }
     
     public void logout()
     {
         clearList();
+        this.examList = null;
+        this.userAssignedExamsList = null;
     }
 }

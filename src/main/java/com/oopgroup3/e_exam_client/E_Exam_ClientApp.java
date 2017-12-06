@@ -14,6 +14,7 @@ import com.oopgroup3.e_exam_client.Threads.ClientLoginThread;
 import com.oopgroup3.e_exam_client.Threads.SaveExamCreationThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ClientServerResponseThread;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
+import com.oopgroup3.e_exam_client.Threads.AssignStudentExamThread;
 import com.oopgroup3.e_exam_client.Threads.DeleteExamThread;
 import com.oopgroup3.e_exam_client.Threads.SaveKeyExamThread;
 import com.oopgroup3.e_exam_client.Threads.LoadExamThread;
@@ -47,7 +48,23 @@ public class E_Exam_ClientApp
         
     public static void main(String[] args) {
          
-        
+        /* Attempt to load and set gui look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(E_Exam_Client_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(E_Exam_Client_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(E_Exam_Client_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(E_Exam_Client_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         /***********************************************
         * Setup the GUI frame by placing it on the EDT *
         ************************************************/
@@ -193,6 +210,15 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                JButton teacherLogoutButton = GUI.getTeacherBackToLogin();
+                teacherLogoutButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        Exam.logout();
+                        GUI.switchCardView("login");
+                        
+                    }
+                });
                 
                 /*******************************************************************
                 * Teacher control panel button event for deleting a created exam     *
@@ -213,6 +239,7 @@ public class E_Exam_ClientApp
                 assignExamButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
+                        EXECUTOR.execute(new UserAssignedExamsListUpdater(Exam, responseSharedData));
                         GUI.switchCardView("assignExam");
                     }
                 });
@@ -222,10 +249,20 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         
-                        EXECUTOR.execute(new UserAssignedExamsListUpdater(Exam, responseSharedData));
+                        EXECUTOR.execute(new AssignStudentExamThread(Exam, responseSharedData, EXECUTOR));
+                        
                     }
                 });
                 
+                JButton cancelAssignExamButton = GUI.getCancelAssignExamBtn();
+                cancelAssignExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        
+                        Exam.getUserAssignedExamsList().clearLists();
+                        GUI.switchCardView("teacher");
+                    }
+                });
                 
                 JButton addTrueFalseForm = GUI.getTrueFalseFormAddBtn();
                 addTrueFalseForm.addActionListener(new ActionListener() {
@@ -359,6 +396,7 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                
 
                 /*
                     Student Panel Controls
@@ -400,6 +438,16 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         
+                        GUI.switchCardView("student");
+                    }
+                });
+                
+                JButton cancelStudentExamButton = GUI.getCancelStudentExam();
+                cancelStudentExamButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().getRootPanel().removeAll();
+                        ExamFormCreationManager.getInstanceExamFormCreationManager().resetAtomicInts();
                         GUI.switchCardView("student");
                     }
                 });
