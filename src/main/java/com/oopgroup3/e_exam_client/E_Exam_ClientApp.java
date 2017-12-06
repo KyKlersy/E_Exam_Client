@@ -464,6 +464,14 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                JButton studentLogoutButton = GUI.getStudentBackToLogin();
+                studentLogoutButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        Exam.getExamList().clear();
+                        GUI.switchCardView("login");
+                    }
+                });
                 
                 
             };   

@@ -280,11 +280,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
         student_panel.setLayout(new java.awt.GridBagLayout());
 
         studentBackToLogin.setText("Logout");
-        studentBackToLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentBackToLoginActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -650,10 +645,6 @@ public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void studentBackToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentBackToLoginActionPerformed
-        cardLayoutManager.show(cardlayout_container, "login");
-    }//GEN-LAST:event_studentBackToLoginActionPerformed
 
     public void switchCardView(String cardName)
     {
