@@ -26,6 +26,14 @@ import javax.swing.SwingUtilities;
  *
  * @author Kyle
  */
+
+/**
+ * This thread wake up when user hits login btn
+ * if teacher, switch to teacher panel
+ * if student, switch to student panel
+ * load examList
+ * @author tri.le
+ */
 public class ClientLoginThread extends SwingWorker<String, Object>{
 
     private final E_Exam_Client_GUI GUI;

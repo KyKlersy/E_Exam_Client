@@ -16,6 +16,13 @@ import javax.swing.JList;
  *
  * @author Kyle
  */
+
+/**
+ * Hold the list of Exam
+ * This object will be created when both
+ * students and teachers successfully login
+ * @author tri.le
+ */
 public class ExamList
 {
     private JList<String> examJList;
@@ -39,6 +46,9 @@ public class ExamList
 
     }
     
+    /**
+     * will be called from main method
+     */
     public void updateList()
     {
         examNameList.clear();

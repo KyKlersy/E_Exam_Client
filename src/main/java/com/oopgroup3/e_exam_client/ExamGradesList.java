@@ -12,7 +12,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 /**
- *
+ * Hold the list of ExamGrades
+ * This object is created when students hit on ViewGrade button
  * @author tri.le
  */
 public class ExamGradesList {
@@ -30,6 +31,9 @@ public class ExamGradesList {
         defaultListModel = (DefaultListModel)examGradesJList.getModel();
         defaultListModel.removeAllElements();
     }
+    /**
+     * will be called from main method
+     */
     public void updateList(){
         defaultListModel.removeAllElements();
         EXECUTOR.execute(new ExamGradesUpdaterThread(responseSharedData, defaultListModel, GUI));

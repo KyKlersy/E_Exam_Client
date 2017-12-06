@@ -29,6 +29,12 @@ import javax.swing.SwingWorker;
  *
  * @author Kyle
  */
+
+/**
+ * Will be called when teacher hit assignExamBtn 
+ * to specific student which is in assignExam panel
+ * @author tri.le
+ */
 public class UserAssignedExamsListUpdater extends SwingWorker<String, Object> {
 
 

@@ -3,8 +3,10 @@ package com.oopgroup3.e_exam_client;
 /**
  * This class handles the responsibility of the user data returned when the 
  * user is authenticated.
+ * This class is singleton design pattern
  * @author Kyle
  */
+
 public class User 
 {
     private static User userInstance;

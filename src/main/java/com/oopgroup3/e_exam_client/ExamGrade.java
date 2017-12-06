@@ -9,6 +9,11 @@ package com.oopgroup3.e_exam_client;
  *
  * @author Kyle
  */
+
+/**
+ * Hold ExamGrade information
+ * @author tri.le
+ */
 public class ExamGrade
 {
     private float grade;

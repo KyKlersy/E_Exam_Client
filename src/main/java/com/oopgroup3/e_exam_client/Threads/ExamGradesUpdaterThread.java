@@ -21,7 +21,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 
 /**
- *
+ * wake up when student click on view grade btn
+ * will be wake up from updateList method in ExamGradesList class
  * @author tri.le
  */
 public class ExamGradesUpdaterThread extends SwingWorker<String, Object>{

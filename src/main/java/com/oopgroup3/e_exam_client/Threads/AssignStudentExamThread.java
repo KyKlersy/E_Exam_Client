@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import javax.swing.SwingWorker;
 
 /**
- *
+ * this thread wil be created when teacher click assign btn
  * @author Kyle
  */
 public class AssignStudentExamThread extends SwingWorker<Void, Object>

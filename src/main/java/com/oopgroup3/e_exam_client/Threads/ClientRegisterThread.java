@@ -24,7 +24,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
- *
+ * wake up when user click register btn
+ * allow user to choose teacher or student
  * @author tri.le
  */
 public class ClientRegisterThread extends SwingWorker<String, Object>{

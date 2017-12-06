@@ -18,7 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
- *
+ * wake up when teacher delete the exam
+ * send msg to sever and then update examlist again
  * @author tri.le
  */
 public class DeleteExamThread extends SwingWorker<String, Object>{

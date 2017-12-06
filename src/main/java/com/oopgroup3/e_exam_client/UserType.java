@@ -9,6 +9,11 @@ package com.oopgroup3.e_exam_client;
  *
  * @author Kyle
  */
+
+/**
+ * enum defines user type: teacher and student
+ * @author tri.le
+ */
 public enum UserType 
 {
     Student(1),

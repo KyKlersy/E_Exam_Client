@@ -18,6 +18,12 @@ import javax.swing.JList;
  *
  * @author Kyle
  */
+
+/**
+ * created when teacher assign exam to students
+ * will be created from main method
+ * @author tri.le
+ */
 public class UserAssignedExamsList 
 {
 

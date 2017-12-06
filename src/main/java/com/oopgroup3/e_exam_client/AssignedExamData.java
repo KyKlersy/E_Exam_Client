@@ -9,6 +9,11 @@ package com.oopgroup3.e_exam_client;
  *
  * @author Kyle
  */
+
+/**
+ * Exam class. It can be added to ExamPanel 
+ * @author tri.le
+ */
 public class AssignedExamData 
 {
     private String examName;
