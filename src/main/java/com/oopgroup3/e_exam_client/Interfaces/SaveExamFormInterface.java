@@ -8,7 +8,8 @@ package com.oopgroup3.e_exam_client.Interfaces;
 import com.oopgroup3.e_exam_client.ExamQuestionClasses.ExamQuestion;
 
 /**
- *
+ * Saving of an exam form includes all of its data fields to be packaged
+ * and sent to the server.
  * @author Kyle
  */
 public interface SaveExamFormInterface 

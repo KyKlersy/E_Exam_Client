@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oopgroup3.e_exam_client.ServerResponseHandler;
 
 import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
@@ -19,6 +14,8 @@ import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 
 /**
  *
+ * This Thread is dedicated to handling all responses received from the server
+ * it then hands off the received information to a response worker.
  * @author Kyle
  */
 public class ClientServerResponseThread implements Runnable{
