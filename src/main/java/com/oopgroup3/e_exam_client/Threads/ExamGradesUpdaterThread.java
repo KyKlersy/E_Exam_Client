@@ -1,52 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.oopgroup3.e_exam_client.Threads;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.oopgroup3.e_exam_client.E_Exam_Client_GUI;
-import com.oopgroup3.e_exam_client.MessagingClasses.AbstractListResponse;
-import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
+import com.oopgroup3.e_exam_client.ExamGrade;
 import com.oopgroup3.e_exam_client.ExamListData;
 import com.oopgroup3.e_exam_client.MessagingClasses.AbstractListDecoder;
+import com.oopgroup3.e_exam_client.MessagingClasses.AbstractListResponse;
+import com.oopgroup3.e_exam_client.MessagingClasses.MessageWithResponse;
 import com.oopgroup3.e_exam_client.ServerResponseHandler.ResponseSharedData;
 import com.oopgroup3.e_exam_client.User;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import javax.swing.SwingWorker;
-import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
-import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.SwingWorker;
 
 /**
  *
- * @author Kyle
+ * @author tri.le
  */
-public class ExamListUpdaterThread extends SwingWorker<String, Object>
-{
+public class ExamGradesUpdaterThread extends SwingWorker<String, Object>{
     private ResponseSharedData responseSharedData;
-    private ArrayList examNameList;
-    private ArrayList examIDList;
-    private DefaultListModel defaultListModel;
-    private User user = User.getUserInstance();
     private MessageWithResponse responseMessage;
+    private User user = User.getUserInstance();
+    private DefaultListModel defaultListModel;
     private AbstractListDecoder abstractListDecoder;
+    private E_Exam_Client_GUI GUI;
 
-    public ExamListUpdaterThread(ResponseSharedData responseSharedData, ArrayList<String> examNameList, ArrayList<Integer> examIDList, DefaultListModel defaultListModel)
-    {
+    public ExamGradesUpdaterThread(ResponseSharedData responseSharedData, DefaultListModel defaultListModel, E_Exam_Client_GUI GUI) {
         this.responseSharedData = responseSharedData;
-        this.examNameList = examNameList;
-        this.examIDList = examIDList;
         this.defaultListModel = defaultListModel;
+        this.GUI = GUI;
         abstractListDecoder = new AbstractListDecoder();
     }
 
     @Override
-    protected String doInBackground() 
-    {
+    protected String doInBackground() throws Exception {
         String[] parameters = new String[2];
         parameters[0] = String.valueOf(user.getUserID());
         parameters[1] = String.valueOf(user.getUserType());
-        responseMessage = new MessageWithResponse(user.getSessionID(), "GetTeacherExamList", parameters);
+        responseMessage = new MessageWithResponse(user.getSessionID(), "GetExamGrades", parameters);
         responseSharedData.produce(responseMessage);
         
         try 
@@ -73,32 +71,26 @@ public class ExamListUpdaterThread extends SwingWorker<String, Object>
             ex.printStackTrace();
         }
         
-        print("Json Returned meg: " + msg);
+        TypeToken<AbstractListResponse<ExamGrade>> typeToken = new TypeToken<AbstractListResponse<ExamGrade>>(){};
+        AbstractListResponse<ExamGrade> responseClass = abstractListDecoder.parseAbstractListResponse(msg, typeToken);
         
-        TypeToken<AbstractListResponse<ExamListData>> typeToken = new TypeToken<AbstractListResponse<ExamListData>>(){};
-        AbstractListResponse<ExamListData> responseClass = abstractListDecoder.parseAbstractListResponse(msg, typeToken);
-                    
+        
         System.out.println("Size of list: " + responseClass.getList().size());
         
-
+        
         responseClass.getList().forEach(item -> {
            
-            examNameList.add(item.getExamName());
-            examIDList.add(item.getExamID());
+            defaultListModel.addElement(item.toString());
 
         });
         
-        return "Complete";
+        
+        return "complete";
     }
     
     @Override
-    public void done()
-    {
-        
-        examNameList.forEach(examName -> {
-            print("List item: " + examName);
-            defaultListModel.addElement(examName);
-        });
+    protected void done(){
+        //GUI.switchCardView("studentGrades");
     }
     
 }
