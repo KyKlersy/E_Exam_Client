@@ -3,7 +3,7 @@ package com.oopgroup3.e_exam_client;
 /**
  * This class handles the responsibility of the user data returned when the 
  * user is authenticated.
- * @author tri.le
+ * @author Kyle
  */
 public class User 
 {

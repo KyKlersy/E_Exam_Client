@@ -128,6 +128,8 @@ public class E_Exam_ClientApp
                     }
                 });
                 
+                
+                
                 JButton newUserButton = GUI.getNewUserRegisterBtn();
                 newUserButton.addActionListener(new ActionListener() {
                     @Override
@@ -138,6 +140,7 @@ public class E_Exam_ClientApp
                     }
                 });
 
+                
                 /* Register Panel button event for handling registration of new user */
                 JButton registerButton = GUI.getRegister_btn();
                 registerButton.addActionListener(new ActionListener()
@@ -259,7 +262,9 @@ public class E_Exam_ClientApp
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         
+                        
                         Exam.getUserAssignedExamsList().clearLists();
+                        
                         GUI.switchCardView("teacher");
                     }
                 });
