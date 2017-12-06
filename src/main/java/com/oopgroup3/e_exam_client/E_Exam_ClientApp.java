@@ -390,10 +390,8 @@ public class E_Exam_ClientApp
                 viewGradesButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
-                        //Execute thread here to retrive list
-                        // in the swing worker done once the list has been updated
-                        // Call
-                         GUI.switchCardView("studentGrades");
+                       Exam.getExamGradesList().updateList();
+                       GUI.switchCardView("studentGrades");
                     }
                 });
 

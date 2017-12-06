@@ -20,6 +20,7 @@ public class E_Exam
     private final ExecutorService EXECUTOR;
     private ExamList examList;
     /*Add private member reference to your class for handling list below*/
+    private ExamGradesList examGradesList;
 
     public E_Exam(E_Exam_Client_GUI GUI, ResponseSharedData responseSharedData, ExecutorService EXECUTOR) 
     {
@@ -37,13 +38,18 @@ public class E_Exam
             examList.updateList();
             
             /*Construct your ExamGradesList class here*/
-            
+            examGradesList = new ExamGradesList(GUI.getExamGradeJList(), responseSharedData, EXECUTOR, GUI);
+            examGradesList.updateList();
         }
         else if(userType == UserType.Teacher)
         {
             examList = new ExamList(GUI.getAvailableTeacherExams(), responseSharedData, EXECUTOR);
             examList.updateList();
         }       
+    }
+
+    public ExamGradesList getExamGradesList() {
+        return examGradesList;
     }
     
     public ExamList getExamList()
