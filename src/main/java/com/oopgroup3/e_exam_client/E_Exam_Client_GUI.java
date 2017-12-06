@@ -21,6 +21,11 @@ import javax.swing.JTextField;
  *
  * @author Kyle
  */
+
+/**
+ * Control E_Exam_Client GUI components
+ * @author tri.le
+ */
 public class E_Exam_Client_GUI extends javax.swing.JFrame {
 
     private final CardLayout cardLayoutManager;

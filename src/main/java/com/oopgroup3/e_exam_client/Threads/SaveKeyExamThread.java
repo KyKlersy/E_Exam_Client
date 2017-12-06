@@ -27,6 +27,11 @@ import javax.swing.SwingWorker;
  *
  * @author Kyle
  */
+
+/**
+ * will be called when teacher hit saveExamBtn in CreateExamPanel
+ * @author tri.le
+ */
 public class SaveKeyExamThread extends SwingWorker<String, Object>{
 
     private final E_Exam_Client_GUI GUI;

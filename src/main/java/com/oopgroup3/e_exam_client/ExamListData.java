@@ -9,6 +9,12 @@ package com.oopgroup3.e_exam_client;
  *
  * @author Kyle
  */
+
+
+/**
+ * representing for exam list data
+ * @author tri.le
+ */
 public class ExamListData 
 {
     private String ExamName;

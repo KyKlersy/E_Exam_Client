@@ -19,6 +19,11 @@ import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
  *
  * @author plati_000
  */
+
+/**
+ * load the exam list when teacher login
+ * @author tri.le
+ */
 public class ExamLoader 
 {
     private List<ExamQuestion> examList = new ArrayList<ExamQuestion>();

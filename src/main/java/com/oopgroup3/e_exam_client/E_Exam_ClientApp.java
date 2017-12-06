@@ -33,6 +33,13 @@ import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
  *
  * @author Kyle
  */
+
+/**
+ * Program starts from here.
+ * Handle event dispatch
+ * Load GUI and set it "look and feel"
+ * @author tri.le
+ */
 public class E_Exam_ClientApp 
 {
     /* Thread pooling usage of EXECUTOR to run Runables / callables or java swingworkers */

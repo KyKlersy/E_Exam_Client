@@ -6,7 +6,7 @@
 package com.oopgroup3.e_exam_client;
 
 /**
- *
+ * hold user information which will be sent to sever
  * @author tri.le
  */
 public class UserData {

@@ -21,6 +21,13 @@ import javax.swing.DefaultListModel;
  *
  * @author Kyle
  */
+
+/**
+ * wake up when user logins successfully
+ * will be wake up from updateList method in ExamList class
+ * @author tri.le
+ */
+
 public class ExamListUpdaterThread extends SwingWorker<String, Object>
 {
     private ResponseSharedData responseSharedData;

@@ -13,6 +13,11 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Kyle
  */
+
+/**
+ * class to hold exam components: userType, examType, examID
+ * @author tri.le
+ */
 public class E_Exam 
 {
     private final E_Exam_Client_GUI GUI;
@@ -30,6 +35,11 @@ public class E_Exam
         this.EXECUTOR = EXECUTOR;
     }
     
+    /**
+     * set user type after user click login button
+     * load examList for both student and teacher
+     * @param userType 
+     */
     public void setUserType(UserType userType)
     {
         

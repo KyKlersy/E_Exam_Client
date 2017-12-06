@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
 import javax.swing.SwingWorker;
 
 /**
- *
+ * try to ask sever give the exam information in database
  * @author tri.le
  */
 public class LoadExamThread extends SwingWorker<String, Object>
