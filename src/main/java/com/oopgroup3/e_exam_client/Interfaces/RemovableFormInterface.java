@@ -8,7 +8,7 @@ package com.oopgroup3.e_exam_client.Interfaces;
 import javax.swing.JButton;
 
 /**
- *
+ * Allows classes that implement this interface to be removable.
  * @author Kyle
  */
 public interface RemovableFormInterface 

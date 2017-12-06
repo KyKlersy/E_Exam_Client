@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oopgroup3.e_exam_client.ExamQuestionClasses;
 
-import com.oopgroup3.e_exam_client.Interfaces.SaveExamFormInterface;
 import static com.oopgroup3.e_exam_client.Utils.printDebug.*;
 import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
- *
+ * This class is used to get and serialize back the selected answers from an exam.
  * @author Kyle
  */
 public class SelectedExamChoices 
